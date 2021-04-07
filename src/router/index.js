@@ -24,7 +24,7 @@ const router = createRouter({
 
 router.beforeEach((to,from,next)=>{
   if(to.meta.protected){
-    if(localStorage.getItem("loged")){
+    if(localStorage.getItem("isLogged")){
       next();
     }
     else{

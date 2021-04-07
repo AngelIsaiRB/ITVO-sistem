@@ -5,7 +5,7 @@
             <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
             <div class="w-full px-24 z-10">
                 <h1 class="text-5xl font-bold text-left tracking-wide">ITVO</h1>
-                <p class="text-3xl my-4">Sistema de recidencias</p>
+                <p class="text-3xl my-4">Sistema de residencias</p>
             </div>
             </div>
         <div class="lg:w-1/2 w-full flex items-center justify-center text-center md:px-16 px-0 z-0" style="background-color: #161616;">
@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
     data() {
         return {
@@ -65,8 +67,10 @@ export default {
         }
     },
     methods:{
+        ...mapActions(["LoginUser"]),
         onSubmitForm(){
-            console.log({email:this.email, password : this.password })
+            this.LoginUser({email:this.email, password : this.password })
+            // console.log({email:this.email, password : this.password })
             this.email = "";
             this.password = "";
         },
