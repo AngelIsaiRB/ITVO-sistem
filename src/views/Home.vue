@@ -1,4 +1,7 @@
 <template>
+<div v-if="modaNewProyect">
+  <NewProyectVue :fucntionClose="closeModalNewProyect"/>
+</div>
   <header class="bg-white shadow-sm w-full fixed z-10 top-0">
     <div class="max-auto px-8 py-2 bg-white">
       <div class="flex justify-between">
@@ -49,7 +52,8 @@
   <div class="grid grid-cols-12 mt-20">
     <aside class="col-span-4 bg-white h-screen py-5 w-60">
       <button
-        class="flex items-center align-middle py-2 bg-white shadow-md rounded-3xl text-gray-800 text-sm font-semibold ml-3 border border-gray-200 hover:shadow-xl transition-all w-36 focus:outline-none"
+      @click="openModalNew()"
+        class="flex items-center cursor align-middle py-2 bg-white shadow-md rounded-3xl text-gray-800 text-sm font-semibold ml-3 border border-gray-200 hover:shadow-xl transition-all w-36 focus:outline-none"
       >
         <svg class="h-8 px-4" viewBox="0 0 36 36">
           <path class="ng-tns-c17-1" d="M16 16v14h4V20z" fill="#34A853"></path>
@@ -183,6 +187,7 @@
         <hr class="my-5" />
 
         <div class="flex justify-between">
+          
           <h3 class="font-semibold text-gray-500">Agregar proyecto</h3>
           <div class="flex items-center">
             <h3 class="font-semibold text-gray-500">proyectos</h3>
@@ -202,8 +207,8 @@
             </svg>
           </div>
         </div>
-        <div class="grid grid-cols-4 gap-4">
-          <div class="flex mt-5 cursor-pointer ">
+        <div class="grid grid-cols-4 gap-4" >
+          <div class="flex mt-5 cursor-pointer "  @click="openModalNew()">
             <div class="max-w-xs rounded overflow-hidden shadow-lg my-2py-4 border border-gray-300 hover:bg-gray-100">
               <img class="h-28 px-8" src="https://ssl.gstatic.com/analytics/rap/20210322_00020000/static/pngs/blank_google_add_2x.png" alt="Sunset in the mountains"/>
               <div class="px-2 py-2">
@@ -264,8 +269,24 @@
 </template>
 
 <script>
+import NewProyectVue from '../components/modals/NewProyect.vue';
 export default {
   name: "Home",
-  components: {},
+  data() {
+    return {
+      modaNewProyect: false
+    }
+  },
+  components: {
+    NewProyectVue
+  },
+  methods: {
+    openModalNew() {
+        this.modaNewProyect = true
+    },
+    closeModalNewProyect(){
+      this.modaNewProyect = false      
+    }
+  },
 };
 </script>
