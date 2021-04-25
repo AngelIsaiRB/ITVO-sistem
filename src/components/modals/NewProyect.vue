@@ -18,7 +18,14 @@
                 <option value="3">opcin 3</option>
             </select>
         </div>
-
+        <div class="mx-4 mt-2">
+             <p class="text-sm md:text-xl">Nombre de alumno</p>
+             <input 
+                    class="bg-gray-100 border-2 border-black"
+                    type="text"
+                    placeholder="nombre"
+                    >
+        </div>
       </div>
       </div>
   </div>
