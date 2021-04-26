@@ -2,54 +2,8 @@
 <div v-if="modaNewProyect">
   <NewProyectVue :fucntionClose="closeModalNewProyect"/>
 </div>
-  <header class="bg-white shadow-sm w-full fixed z-10 top-0">
-    <div class="max-auto px-8 py-2 bg-white">
-      <div class="flex justify-between">
-        <div class="logo flex items-center space-x-4 mr-10">
-          <img
-            class="h-14"
-            src="https://www.voaxaca.tecnm.mx/wp-content/uploads/2020/05/itvo.ico"
-            alt=""
-          />
-
-          <h1 class="text-black text-2xl">ITVO</h1>
-        </div>
-        <div class="flex-1 ml-8">
-          <div class="w-full inline-flex">
-            <input
-              type="text"
-              placeholder="Buscar en sistema"
-              class="w-full rounded-md text-gray-800 bg-gray-100 focus:bg-white focus:outline-none focus:shadow-lg py-3 px-10 max-w-xl text-md focus:text-gray-800"
-            />
-            <svg
-              class="h-5 mt-4 px-4 absolute text-gray-700"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-        </div>
-
-        <div class="menu flex justify-end items-center flex-1 space-x-4">
-          <img
-            class="h-9 rounded-full border border-gray-100 shadow-sm"
-            src="https://randomuser.me/api/portraits/men/11.jpg"
-            alt="user image"
-          />
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="grid grid-cols-12 mt-20">
+    <HeaderComponentVue/>
+    <div class="grid grid-cols-12 mt-20">
     <aside class="col-span-4 bg-white h-screen py-5 w-60">
       <button
       @click="openModalNew()"
@@ -269,16 +223,18 @@
 </template>
 
 <script>
+import HeaderComponentVue from '../components/header/HeaderComponent.vue';
 import NewProyectVue from '../components/modals/NewProyect.vue';
 export default {
+  components: {
+    NewProyectVue,
+    HeaderComponentVue
+  },
   name: "Home",
   data() {
     return {
       modaNewProyect: false
     }
-  },
-  components: {
-    NewProyectVue
   },
   methods: {
     openModalNew() {
