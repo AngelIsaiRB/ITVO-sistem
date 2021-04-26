@@ -50,7 +50,9 @@
             </select>
         </div>
         <div class="w-full flex justify-end">
-            <div><button class="px-6 mx-4 py-2 text-black font-bold text-base bg-red-400 hover:bg-red-600   rounded-xl" >Cancelar</button></div>
+            <div><button 
+                    @click="fucntionClose()"
+                    class="px-6 mx-4 py-2 text-black font-bold text-base bg-red-400 hover:bg-red-600   rounded-xl" >Cancelar</button></div>
             <div><button class="px-6 mx-4 py-2 text-black font-bold text-base bg-green-300 hover:bg-green-600   rounded-xl" >Crear</button></div>
         </div>
       </div>
