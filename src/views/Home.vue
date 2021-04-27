@@ -15,17 +15,23 @@
         <div class="flex space-x-12">
           <div class="flex">
             <button
-              class="text-blue-600 bg-blue-100 text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-l-md rounded-r-none px-2 py-2"
+            @click="onChangeCategoryMenu(1)"
+            :class="activeCategory===1 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
+              class=" text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-l-md rounded-r-none px-2 py-2"
             >
               Reportes
             </button>
             <button
-              class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none border border-l-0 border-r-0 border-gray-300 px-2 py-2"
+            @click="onChangeCategoryMenu(2)"
+            :class="activeCategory===2 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
+              class=" text-sm font-semibold flex items-center focus:outline-none border border-l-0 border-r-0 border-gray-300 px-2 py-2"
             >
               revisión
             </button>
             <button
-              class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-r-md rounded-l-none px-2 py-2"
+            @click="onChangeCategoryMenu(3)"
+            :class="activeCategory===3 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
+              class=" text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-r-md rounded-l-none px-2 py-2"
             >
               otro...
             </button>
@@ -33,8 +39,15 @@
         </div>
 
         <hr class="my-5" />
+        <div v-if="activeCategory === 1" class="">
           <ProyectsComponentVue :openModalNew="openModalNew"/>
-        
+        </div>
+        <div v-if="activeCategory === 2" class="">
+          <p>segunda categoria</p>
+        </div>
+        <div v-if="activeCategory === 3" class="">
+          <p>tercera categ</p>
+        </div>
       </div>
     </div>
   </div>
@@ -55,7 +68,8 @@ export default {
   name: "Home",
   data() {
     return {
-      modaNewProyect: false
+      modaNewProyect: false,
+      activeCategory : 1,
     }
   },
   methods: {
@@ -64,7 +78,10 @@ export default {
     },
     closeModalNewProyect(){
       this.modaNewProyect = false      
-    }
+    },
+    onChangeCategoryMenu(menuSelected){
+      this.activeCategory = menuSelected
+    },
   },
 };
 </script>
