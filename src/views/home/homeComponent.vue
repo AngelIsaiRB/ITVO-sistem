@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import MenuAsideComponentVue from '../components/aside/MenuAsideComponent.vue';
-import HeaderComponentVue from '../components/header/HeaderComponent.vue';
-import ProyectsComponentVue from '../components/home_category/ProyectsComponent.vue';
-import NewProyectVue from '../components/modals/NewProyect.vue';
+import MenuAsideComponentVue from '../../components/aside/MenuAsideComponent.vue';
+import HeaderComponentVue from '../../components/header/HeaderComponent.vue';
+import ProyectsComponentVue from '../../components/home_category/ProyectsComponent.vue';
+import NewProyectVue from '../../components/modals/NewProyect.vue';
 export default {
   components: {
     NewProyectVue,
