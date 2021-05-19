@@ -87,7 +87,9 @@
         </div>
 
         <hr class="my-2" />
-        <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold">
+        <div 
+        @click="goToAdmin()"
+          class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-gray-100 cursor-pointer">
           <button
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -113,12 +115,18 @@
 </template>
 
 <script>
+import router from '../../router/index.js'
 export default {
     props: {
         functionNewPyoyect: {
             type: Function,
             default: ()=>{}
         },
+    },
+    methods: {
+      goToAdmin() {
+        router.push("/admin")
+      }
     },
 }
 </script>

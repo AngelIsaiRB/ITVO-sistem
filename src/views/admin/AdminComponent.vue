@@ -1,21 +1,20 @@
 <template>
   <div>
       <HeaderComponentVue/>
-      <div class="mt-20 ">
-        <MenuAsideComponentVue  />  
+      <div class="mt-20"> 
+          <MenuAdminAsideComponentVue/>
       </div>
       pagina de administracion
   </div>
 </template>
 
 <script>
-import MenuAsideComponentVue from '../../components/aside/MenuAsideComponent.vue'
+import MenuAdminAsideComponentVue from '../../components/aside/MenuAdminAsideComponent.vue'
 import HeaderComponentVue from '../../components/header/HeaderComponent.vue'
-
 export default {
     components:{
         HeaderComponentVue,
-        MenuAsideComponentVue
+        MenuAdminAsideComponentVue
     }
 
 }
