@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/roots/Home.vue'
 import Login from '../views/roots/Login.vue'
+import Admin from '../views/roots/Admin.vue';
 
 const routes = [
   {
@@ -14,6 +15,12 @@ const routes = [
     name: 'Login',
     component: Login
   },
+  {
+    path: '/admin',
+    name:"Administracion",
+    component: Admin,
+    meta:{protected :true}
+  }
 ]
 
 const router = createRouter({
