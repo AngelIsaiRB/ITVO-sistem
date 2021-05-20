@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import router from '../router';
 import firebase from 'firebase';
-
+// import * as admin from "firebase-admin"
 // firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyBBFFiFGqzO9djayQ7UNOV8ngkBR-Qx5c4",
@@ -18,11 +18,17 @@ import firebase from 'firebase';
 export default createStore({
   state: {
     isLogged:false,
+    usersAdmin:{},
+
   },
   mutations: {
     setLogged(state){
       state.isLogged = !state.isLogged;
+    },
+    setUsersAdmin(state,payload){
+      state.usersAdmin = payload;
     }
+
   },
   actions: {
     LoginUser({commit},payload){
@@ -36,8 +42,21 @@ export default createStore({
         commit("setLogged")
         router.push("/")
       })      
+    },
+    getAllUsers({commit}){
+      commit("setUsersAdmin",{admins:[{
+        img:"https://www.galileo.edu/trends-innovation/wp-content/uploads/2019/12/Lasi-Trab-Grande.jpg",
+        name:"nombre apellido apellido",
+        date:"12/12/12",
+        root:true
+      }]})
     }
   },
   modules: {
+  },
+  getters:{
+    getUsersAdmin(state){
+      return state.usersAdmin;
+    }
   }
 })

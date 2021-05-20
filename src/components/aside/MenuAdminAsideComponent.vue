@@ -2,7 +2,11 @@
   <aside class="col-span-4 bg-white h-screen py-5 w-60">
       
       <div class="mt-5">
-          <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold">
+          <div 
+            :class="selected === 1
+                ?'bg-blue-200'
+                :''"
+            class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
           <button
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -24,10 +28,10 @@
           </button>
         </div>
         <div
-          class="bg-blue-50 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold"
+          class=" mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer"
         >
           <button
-            class="text-blue-500 text-sm font-semibold flex items-center focus:outline-none"
+            class="text-gray-600 text-black text-sm font-semibold flex items-center focus:outline-none"
           >
             <svg
               class="h-5 px-3"
@@ -47,7 +51,7 @@
           </button>
         </div>
 
-        <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold">
+        <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
           <button
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -74,6 +78,11 @@
 
 <script>
 export default {
+    data() {
+        return {
+            selected: 1,
+        }    
+    },
     props: {
         functionNewPyoyect: {
             type: Function,
