@@ -1,7 +1,7 @@
 import { createStore } from 'vuex';
 import router from '../router';
 import firebase from 'firebase';
-// import * as admin from "firebase-admin"
+
 // firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyBBFFiFGqzO9djayQ7UNOV8ngkBR-Qx5c4",
@@ -14,6 +14,7 @@ import firebase from 'firebase';
   };
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+  const db = firebase.firestore();
 // 
 export default createStore({
   state: {
@@ -43,13 +44,20 @@ export default createStore({
         router.push("/")
       })      
     },
-    getAllUsers({commit}){
-      commit("setUsersAdmin",{admins:[{
-        img:"https://www.galileo.edu/trends-innovation/wp-content/uploads/2019/12/Lasi-Trab-Grande.jpg",
-        name:"nombre apellido apellido",
-        date:"12/12/12",
-        root:true
-      }]})
+   async getAllUsers({commit}){
+      const payload=[];
+      const profesors = db.collection("profesor");
+     await profesors.get().then( (doc)=>{
+         doc.forEach((prof)=>{
+          // console.log(prof.data())
+           payload.push(prof.data())
+        })
+        console.log("commit")
+        commit("setUsersAdmin",{admins:payload})
+      }).catch((error)=>{
+        // TODO: mandar una alerta
+        console.log(error)
+      })
     }
   },
   modules: {

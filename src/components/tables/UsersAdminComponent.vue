@@ -11,12 +11,8 @@
               <span class="text-gray-300">Name</span>
             </th>
             <th class="px-16 py-2">
-              <span class="text-gray-300">Fecha</span>
+              <span class="text-gray-300">Email</span>
             </th>
-            <th class="px-16 py-2">
-              <span class="text-gray-300">Administrador</span>
-            </th>
-
             <th class="px-16 py-2">
               <span class="text-gray-300">Opciones</span>
             </th>
@@ -37,15 +33,7 @@
               <span class="text-center ml-2 font-semibold justify-center">{{user.name}}</span>
             </td>
             <td class="px-16 py-2 justify-center">
-              <span>{{user.date}}</span>
-            </td>
-            <td class="px-16 py-2 justify-center">
-              <span class="text-green-500">
-                <div 
-                    :class="user.root ? 'bg-green-500' : 'bg-red-500'"
-                    class="h-6 w-6  rounded-full">
-                </div>
-              </span>
+              <span>{{user.email}}</span>
             </td>
             <td class="px-16 py-2 justify-center">
               <button class="bg-red-500 text-white px-4 py-2 border rounded-md hover:bg-red-600 hover:border-indigo-500 ">
@@ -71,14 +59,18 @@ export default {
     },
     methods:{
         ...mapActions(["getAllUsers"]),
+        async getDbAllUsers(){
+            await this.getAllUsers()
+            this.admins = this.getUsersAdmin;
+            console.log("despues de commit")
+            console.log(this.admins.admins)
+        }
     },
     computed:{
         ...mapGetters(["getUsersAdmin"])
     },
     mounted () {
-        this.getAllUsers()
-        this.admins = this.getUsersAdmin;
-        console.log(this.admins.admins[0].name)
+       this.getDbAllUsers()
     },
 }
 </script>
