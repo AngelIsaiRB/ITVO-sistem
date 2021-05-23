@@ -19,7 +19,9 @@ import firebase from 'firebase';
 export default createStore({
   state: {
     isLogged:false,
-    usersAdmin:{},
+    usersAdmin:{
+      admins:[]
+    },
     alertStatus:{
       status:false,
       msg:""
@@ -37,6 +39,13 @@ export default createStore({
         ...state.alertStatus,
         ...payload
       };
+    },
+    deleteFromUsersAdmin(state,payload){
+      state.usersAdmin.admins = state.usersAdmin.admins.filter((admin)=>{
+        if(admin.id !== payload){
+          return admin
+        }
+      })
     }
   },
   actions: {
@@ -57,18 +66,33 @@ export default createStore({
       const profesors = db.collection("profesor");
      await profesors.get().then( (doc)=>{
          doc.forEach((prof)=>{
-          // console.log(prof.data())
-           payload.push(prof.data())
+           payload.push({
+             ...prof.data(),
+             id:prof.id
+           })
         })
-        console.log("commit")
         commit("setUsersAdmin",{admins:payload})
       }).catch((error)=>{
         commit("setAlertStatus",{
           status:true,
-          msg:"hola mundo"
+          msg:"algo salio mal al traer los profesores"
         })
         console.log(error)
       })
+    },
+    async deleteUserForFirebase({commit},payload){
+      db.collection("profesor").doc(payload).delete().then(
+        ()=>{
+          alert("profesor eliminado")
+        }
+      ).catch((error)=>{
+        console.log(error)
+        commit("setAlertStatus",{
+          status:true,
+          msg:"no se pudo eliminar"
+        })
+      })
+      commit("deleteFromUsersAdmin",payload)
     },
     toggleAlertStatus({commit},payload){
       commit("setAlertStatus",payload)

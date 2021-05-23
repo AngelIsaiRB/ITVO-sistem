@@ -36,7 +36,9 @@
               <span>{{user.email}}</span>
             </td>
             <td class="px-16 py-2 justify-center">
-              <button class="bg-red-500 text-white px-4 py-2 border rounded-md hover:bg-red-600 hover:border-indigo-500 ">
+              <button 
+                @click="deleteUserAdmin(user)"
+                class="bg-red-500 text-white px-4 py-2 border rounded-md hover:bg-red-600 hover:border-indigo-500 ">
                 Eliminar
               </button>
             </td>
@@ -58,12 +60,17 @@ export default {
         }
     },
     methods:{
-        ...mapActions(["getAllUsers"]),
+        ...mapActions(["getAllUsers","deleteUserForFirebase"]),
         async getDbAllUsers(){
             await this.getAllUsers()
             this.admins = this.getUsersAdmin;
-            console.log("despues de commit")
-            console.log(this.admins.admins)
+        },
+        deleteUserAdmin(user){
+          if (confirm(`Desea eliminar al profesor: ${user.name}`)) { 
+            this.deleteUserForFirebase(user.id);            
+          } else {
+            console.log('no.');
+          }
         }
     },
     computed:{
