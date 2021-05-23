@@ -40,13 +40,12 @@
           >Imagen</label
         >
         <input
+          @change="addFile"
           class="w-full px-2 py-2 text-gray-700 bg-gray-200 rounded"
           id="img"
-          name="cus_emailimg"
-          type="text"
-          required=""
-          placeholder="Street"
-          aria-label="Email"
+          accept="image/png, image/gif, image/jpeg"
+          type="file"
+          placeholder="foto"
         />
       </div>
       <div class="mt-4">
@@ -62,6 +61,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     props: {
         fucntionClose: {
@@ -73,11 +73,12 @@ export default {
         return {
             name: "",
             email:"",
-            img:""
+            img:File,
         }
     },
     methods: {
-        onLoadForm() {
+        ...mapActions(["onSaveProfesorFirebase"]),
+        async onLoadForm() {
             if(this.name === null || this.name.trim() ==="" ){
                 alert("falta un campo")
                 return
@@ -86,23 +87,33 @@ export default {
                 alert("Email incorrecto")
                 return
             }
-            console.log({
-                name:this.name,
-                email:this.email
-                })
+            await this.onSaveProfesor();
+            this.fucntionClose()
         },
         validateEmail(email) {
-      let isValid = true;
-      if (!email.includes("@") || email === null || email.trim() === "") {
-        console.log("NO ES VALIDO");
-        isValid = false;
-      }
-      console.log("si es validoo");
-      return isValid;
-    },
+            let isValid = true;
+            if (!email.includes("@") || email === null || email.trim() === "") {
+              console.log("NO ES VALIDO");
+              isValid = false;
+            }
+            console.log("si es validoo");
+            return isValid;
+        },
+        addFile(e){
+             this.img = e.target.files[0];
+        },
+        onSaveProfesor(){
+            this.onSaveProfesorFirebase({
+            img:this.img,
+            nameImg:this.img.name,     
+            name:this.name,
+            email:this.email       
+        })
+    }
     },
 };
 </script>
 
 <style>
+
 </style>

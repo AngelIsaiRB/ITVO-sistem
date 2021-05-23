@@ -34,6 +34,9 @@ export default createStore({
     setUsersAdmin(state,payload){
       state.usersAdmin = payload;
     },
+    setOnlyOneAdmin(state,payload){
+      state.usersAdmin.admins.push(payload)
+    },
     setAlertStatus(state,payload){
       state.alertStatus = {
         ...state.alertStatus,
@@ -72,6 +75,7 @@ export default createStore({
            })
         })
         commit("setUsersAdmin",{admins:payload})
+        console.log("get all users ok")
       }).catch((error)=>{
         commit("setAlertStatus",{
           status:true,
@@ -96,6 +100,30 @@ export default createStore({
     },
     toggleAlertStatus({commit},payload){
       commit("setAlertStatus",payload)
+    },
+    async onSaveProfesorFirebase({commit},payload){
+      const refimg = firebase.storage().ref(`/photos/profesor/${payload.nameImg}`);
+      await refimg.put(payload.img).then((snapshot) =>{
+        snapshot.ref.getDownloadURL().then((url)=>{
+          console.log(url)
+          // guardar en DB
+          db.collection("profesor").add({
+            name:payload.name,
+            email:payload.email,
+            img:url
+          }).then((result)=>{
+            // console.log(ev.id)
+            commit("setOnlyOneAdmin",{
+            name:payload.name,
+            email:payload.email,
+            img:url,
+            id:result.id
+            })
+            console.log("profero agregado")
+          })
+          // 
+        })
+      });
     }
   },
   modules: {
