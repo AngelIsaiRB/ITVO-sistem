@@ -20,7 +20,10 @@ export default createStore({
   state: {
     isLogged:false,
     usersAdmin:{},
-
+    alertStatus:{
+      status:false,
+      msg:""
+    },
   },
   mutations: {
     setLogged(state){
@@ -28,8 +31,13 @@ export default createStore({
     },
     setUsersAdmin(state,payload){
       state.usersAdmin = payload;
+    },
+    setAlertStatus(state,payload){
+      state.alertStatus = {
+        ...state.alertStatus,
+        ...payload
+      };
     }
-
   },
   actions: {
     LoginUser({commit},payload){
@@ -55,9 +63,15 @@ export default createStore({
         console.log("commit")
         commit("setUsersAdmin",{admins:payload})
       }).catch((error)=>{
-        // TODO: mandar una alerta
+        commit("setAlertStatus",{
+          status:true,
+          msg:"hola mundo"
+        })
         console.log(error)
       })
+    },
+    toggleAlertStatus({commit},payload){
+      commit("setAlertStatus",payload)
     }
   },
   modules: {
@@ -65,6 +79,9 @@ export default createStore({
   getters:{
     getUsersAdmin(state){
       return state.usersAdmin;
+    },
+    getAlertStatus(state){
+      return state.alertStatus;
     }
   }
 })
