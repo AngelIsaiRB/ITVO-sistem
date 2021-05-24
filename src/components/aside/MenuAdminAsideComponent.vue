@@ -3,6 +3,20 @@
       
       <div class="mt-5">
           <div 
+          @click="goToHome()"
+            :class="selected === 0
+                ?'bg-blue-200'
+                :''"
+            class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
+          <button
+            class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
+          >
+              <i class="fas fa-home fa-lg mx-6 "></i>
+            Home
+          </button>
+        </div>
+        <hr>
+          <div 
             :class="selected === 1
                 ?'bg-blue-200'
                 :''"
@@ -77,6 +91,7 @@
 </template>
 
 <script>
+import router from '../../router'
 export default {
     data() {
         return {
@@ -88,6 +103,11 @@ export default {
             type: Function,
             default: ()=>{}
         },
+    },
+    methods: {      
+      goToHome() {
+        router.push("/")
+      }
     },
 }
 </script>

@@ -14,14 +14,16 @@
           <div>
             <MenuAdminAsideComponentVue/>
           </div>
-          <div class="h-full w-full bg-gray-100 ">
+          <div class="h-full w-full ">
               <div>
-                  <div class="h-20 w-full bg-gray-100 my-2 mx-4">
+                  <div class="h-20 w-full  my-2 mx-4">
                       <AdminMenuComponentVue
                       :functionOpen="openModalNew"
                       />
                   </div>
+                  <div class="bg-gray-100">
                 <UsersAdminComponentVue/>
+                    </div>                  
               </div>
         </div>          
 
