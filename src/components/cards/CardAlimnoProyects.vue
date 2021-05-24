@@ -1,12 +1,13 @@
 <template>
   <div 
-    @click="clickUser()"
+    @click="clickUser(proyect)"
     class="flex mt-5 cursor-pointer ">
             <div class="max-w-xs rounded overflow-hidden shadow-lg my-2py-4 border border-gray-300 hover:bg-gray-100">
               <img class="h-28 px-8" src="../../assets/users/user.png" alt="Sunset in the mountains"/>
               <div class="px-2 py-2">
-                <div class="font-semibold text-sm mb-2">Nombre de alumno</div>
-                <p class="font-semibold text-gray-400 text-xs">Residencia</p>
+                <div class="font-semibold text-sm mb-2">{{proyect.nameAlumno}}</div>
+                <div class="font-semibold text-gray-500 text-sm mb-2">{{proyect.carrera}}</div>
+                <p class="font-semibold text-gray-400 text-xs">{{proyect.type}}</p>
               </div>
             </div>
           </div>
@@ -15,9 +16,14 @@
 <script>
 export default {
     methods: {
-        clickUser() {
-            alert("cliick")  
+        clickUser(proyect) {
+            alert(`click en  ${proyect.nameProyect}`);  
         }
+    },
+    props: {
+      proyect: {
+        default: {}
+      },
     },
 }
 </script>

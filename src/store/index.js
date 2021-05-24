@@ -26,6 +26,14 @@ export default createStore({
       status:false,
       msg:""
     },
+    // proyects
+    proyects:[
+
+    ],
+    ActiveProyect:{
+
+    },
+    // 
   },
   mutations: {
     setLogged(state){
@@ -33,6 +41,9 @@ export default createStore({
     },
     setUsersAdmin(state,payload){
       state.usersAdmin = payload;
+    },
+    setAllProyects(state,payload){
+      state.proyects = payload
     },
     setOnlyOneAdmin(state,payload){
       state.usersAdmin.admins.push(payload)
@@ -52,6 +63,7 @@ export default createStore({
     }
   },
   actions: {
+    // login user super root
     LoginUser({commit},payload){
       console.log(payload)
       firebase.auth().signInWithEmailAndPassword(payload.email,payload.password)
@@ -64,6 +76,8 @@ export default createStore({
         router.push("/")
       })      
     },
+    // 
+    // profesores
    async getAllUsers({commit}){
       const payload=[];
       const profesors = db.collection("profesor");
@@ -98,21 +112,16 @@ export default createStore({
       })
       commit("deleteFromUsersAdmin",payload)
     },
-    toggleAlertStatus({commit},payload){
-      commit("setAlertStatus",payload)
-    },
     async onSaveProfesorFirebase({commit},payload){
       const refimg = firebase.storage().ref(`/photos/profesor/${payload.nameImg}`);
       await refimg.put(payload.img).then((snapshot) =>{
         snapshot.ref.getDownloadURL().then((url)=>{
           console.log(url)
-          // guardar en DB
           db.collection("profesor").add({
             name:payload.name,
             email:payload.email,
             img:url
           }).then((result)=>{
-            // console.log(ev.id)
             commit("setOnlyOneAdmin",{
             name:payload.name,
             email:payload.email,
@@ -124,13 +133,44 @@ export default createStore({
           // 
         })
       });
+    },
+    // 
+    // alertas
+    toggleAlertStatus({commit},payload){
+      commit("setAlertStatus",payload)
+    },
+    // proyectos
+    async getAllProyects({commit}){
+      const payload=[];
+      const proyects = db.collection("proyects");
+     await proyects.get().then( (doc)=>{
+         doc.forEach((proy)=>{
+           payload.push({
+             ...proy.data(),
+             id:proy.id
+           })
+        })
+        commit("setAllProyects",payload)
+        // console.log(payload)
+        console.log("get all proyects ok ")
+      }).catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al traer los proyectos"
+        })
+        console.log(error)
+      })
     }
+    // 
   },
   modules: {
   },
   getters:{
     getUsersAdmin(state){
       return state.usersAdmin;
+    },
+    getAllPoryects(state){
+      return state.proyects;
     },
     getAlertStatus(state){
       return state.alertStatus;

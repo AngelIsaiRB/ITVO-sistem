@@ -29,23 +29,43 @@
               </div>
             </div>
           </div>
-          <div v-for="x in (10)" :key="x" >
-            <CardAlimnoProyectsVue />
+          <div v-for="proyect in proyects" :key="proyect" >
+            <CardAlimnoProyectsVue 
+              :proyect="proyect"
+              />
           </div>
         </div>
 </template>
 
 <script>
 import CardAlimnoProyectsVue from '../cards/CardAlimnoProyects.vue'
+import { mapActions, mapGetters } from 'vuex';
 export default {
   components: {
     CardAlimnoProyectsVue,
+  },
+  data() {
+    return {
+      proyects: []
+    }
   },
     props: {
         openModalNew: {
             type: Function,
             default: ()=>{}
         },
+    },
+    methods: {
+      ...mapActions(["getAllProyects"])
+    },
+    computed: {
+      ...mapGetters(["getAllPoryects"])
+    },
+    async mounted () {
+      await this.getAllProyects();
+      this.proyects = this.getAllPoryects;
+      console.log(this.proyects)
+      
     },
 }
 </script>

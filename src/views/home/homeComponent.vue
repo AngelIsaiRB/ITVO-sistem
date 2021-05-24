@@ -19,21 +19,21 @@
             :class="activeCategory===1 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
               class=" text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-l-md rounded-r-none px-2 py-2"
             >
-              Reportes
+              Todos
             </button>
             <button
             @click="onChangeCategoryMenu(2)"
             :class="activeCategory===2 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
               class=" text-sm font-semibold flex items-center focus:outline-none border border-l-0 border-r-0 border-gray-300 px-2 py-2"
             >
-              revisión
+              En curso
             </button>
             <button
             @click="onChangeCategoryMenu(3)"
             :class="activeCategory===3 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
               class=" text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-r-md rounded-l-none px-2 py-2"
             >
-              otro...
+              Concluidos
             </button>
           </div>
         </div>
