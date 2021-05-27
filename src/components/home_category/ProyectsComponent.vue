@@ -63,9 +63,7 @@ export default {
     },
     async mounted () {
       await this.getAllProyects();
-      this.proyects = this.getAllPoryects;
-      console.log(this.proyects)
-      
+      this.proyects = this.getAllPoryects;  
     },
 }
 </script>
