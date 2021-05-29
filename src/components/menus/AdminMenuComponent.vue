@@ -10,7 +10,6 @@
           <div class="flex">
             <button
             @click="functionOpen"
-            :class="activeCategory===1 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
               class=" text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded-md px-2 py-2
               hover:bg-blue-200"
             >
