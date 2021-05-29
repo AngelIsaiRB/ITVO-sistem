@@ -26,13 +26,10 @@ export default createStore({
       status:false,
       msg:""
     },
+    publicProyects:[],
     // proyects
-    proyects:[
-
-    ],
-    ActiveProyect:{
-
-    },
+    proyects:[],
+    ActiveProyect:{},
     // 
   },
   mutations: {
@@ -60,6 +57,10 @@ export default createStore({
           return admin
         }
       })
+    },
+    // public commits proyects
+    setPublicProyects(state,payload){
+      state.publicProyects = payload;
     }
   },
   actions: {
@@ -160,6 +161,24 @@ export default createStore({
         })
         console.log(error)
       })
+    },
+    // proyects publics
+    async getAllPublicProyects({commit}){
+      const payload =[];
+      const proyects = db.collection("proyects").where("status", "==", true);
+      await proyects.get().then((doc)=>{
+        doc.forEach((proyect)=>{
+          payload.push(proyect.data())
+        })
+      })
+      .catch((error)=>{
+        console.log(error)
+        commit("setAlertStatus",{
+          status:true,
+          msg:"no se pudo extraer los proyectos publicos"
+        })
+      })
+     commit("setPublicProyects",payload)
     }
     // 
   },
@@ -174,6 +193,9 @@ export default createStore({
     },
     getAlertStatus(state){
       return state.alertStatus;
+    },
+    getPublicProyects(state){
+      return state.publicProyects;
     }
   }
 })

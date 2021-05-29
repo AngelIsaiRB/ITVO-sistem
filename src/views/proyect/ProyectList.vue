@@ -18,34 +18,58 @@
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">nombre</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tipo</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Periodo</th>
-                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Status</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Estatus publico</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tomado</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Empresa</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                        <tr v-for="x in 100" :key="x">
+                        <tr v-for="proyect in proyects" :key="proyect.id">
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
                                 <div class="flex items-center">
                                     <div>
-                                        <div class="text-sm leading-5 text-gray-800">#1</div>
+                                        <div class="text-sm leading-5 text-gray-800">{{proyect.id}}</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500">
-                                <div class="text-sm leading-5 text-blue-900">Damilare Anjorin</div>
+                                <div class="text-sm leading-5 text-blue-900">{{proyect.name}}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">damilareanjorin1@gmail.com</td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">+2348106420637</td>
+                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{
+                                    (proyect.type === 0)?'Proyecto interno':
+                                    (proyect.type === 1)?'Proyecto externo':'Propuesta propia'
+                                }}</td>
+                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{proyect.periodo}}</td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
-                                <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                <span class="relative text-xs">active</span>
+                                <span class="relative inline-block px-3 py-1 font-semibold tex-black leading-tight">
+                                <span aria-hidden class="absolute inset-0opacity-50 rounded-full"></span>
+                                <span 
+                                 :class="(proyect.status)?'bg-green-500':'bg-red-500'"
+                                class="relative text-xs p-2 rounded-full">{{
+                                   ( proyect.status)?'Visible':'No visible'
+                                    }}</span>
                             </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">September 12</td>
+                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                                <span class="relative inline-block px-3 py-1 font-semibold tex-black leading-tight">
+                                <span aria-hidden class="absolute inset-0opacity-50 rounded-full"></span>
+                            <!-- TODO: arreglar overflow de texto muy grnade -->
+                                <span 
+                                 :class="(!proyect.picked)?'bg-green-500':'bg-red-500'"
+                                class="relative text-xs p-2 rounded-full overflow-hidden ">{{
+                                   (!proyect.picked)?'Disponible':'No disp.'
+                                   
+                                    }}</span>
+                            </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
+                                {{proyect.empresa}}
+                            </td>
                             <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                                <button class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">View Details</button>
+                                <button class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
+                                    detalles
+                                </button>
                             </td>
                           </tr>
                         </tbody>
@@ -57,18 +81,36 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import BtnAddComponentVue from '../../components/buttons/BtnAddComponent.vue'
 export default {
+    data() {
+        return {
+            proyects:[],          
+        }
+    },
     components: {
         BtnAddComponentVue,
     },
     methods: {
+        ...mapActions(["getAllProyects"]),
+        async onGetAllUsrs(){
+           await this.getAllProyects(),
+           this.proyects = await this.getAllPoryects;
+           console.log(this.proyects)            
+        },
         onNewProyect() {
             console.log("click en onNewProyect")
         },
         onNewPeriod(){
             console.log("click en onNewPeriod")
         }
+    },
+    computed: {
+        ...mapGetters(["getAllPoryects"])
+    },
+    mounted () {
+           this.onGetAllUsrs()
     },
 }
 </script>
