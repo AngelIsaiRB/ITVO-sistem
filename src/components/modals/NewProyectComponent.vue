@@ -48,7 +48,7 @@
                        </div>
                        <div class="flex">
                             <p class="block text-base text-gray-600 mr-4">Numero de residentes</p>
-                            <input min="1" max="10" type="number" class="px-4 text-black bg-gray-200 rounded">
+                            <input v-model="residents" min="1" max="10" type="number" class="px-4 text-black bg-gray-200 rounded">
                            </div>                       
                    </div>
                    <hr class="my-2">
@@ -214,13 +214,20 @@ export default {
                 console.log("no asigando")
             },
         },
+        isUpdate:{
+            type:Boolean,
+            default:false,
+        },
+        proyectToUpdate:{
+            default:{}
+        }
     },
     data() {
         return {
             name:"",
             type:0,
             periodo:"",
-            numberOfResidents:1,
+            residents:1,
             empresa:"",
             sector:"",
             rfc:"",
@@ -242,13 +249,18 @@ export default {
         }
     },
     methods: {
-        ...mapActions(["onSaveNewPeriod","getAllPeriodsFirebase","onSaveNewProyect"]),
+        ...mapActions(["onSaveNewPeriod",
+        "getAllPeriodsFirebase",
+        "onSaveNewProyect",
+        "onUpdateProyectFirebase",
+        ]),
         onSaveNewProyectLocal(){
+            if(!this.isUpdate){
                 this.onSaveNewProyect({
                     name:this.name,
                     type:this.type,
                     periodo:this.periodo,
-                    residents:this.numberOfResidents,
+                    residents:this.residents,
                     empresa:this.empresa,
                     sector:this.sector,
                     rfc:this.rfc,
@@ -267,8 +279,36 @@ export default {
                     positionAsesor:this.positionAsesor,
                     namePersonAcuerdo:this.namePersonAcuerdo,
                     namePersonAcuerdoPosition:this.namePersonAcuerdoPosition,
-
                 })
+            }
+            else{
+                this.onUpdateProyectFirebase({
+                    id:this.proyectToUpdate.id,
+                    name:this.name,
+                    type:this.type,
+                    periodo:this.periodo,
+                    residents:this.residents,
+                    empresa:this.empresa,
+                    sector:this.sector,
+                    rfc:this.rfc,
+                    street:this.street,
+                    colony:this.colony,
+                    zipCode:this.zipCode,
+                    municipio:this.municipio,
+                    city:this.city,
+                    estado:this.estado,
+                    phone:this.phone,
+                    email:this.email,
+                    mision:this.mision,
+                    titular:this.titular,
+                    titularPosition:this.titularPosition,
+                    externalAsesor:this.externalAsesor,
+                    positionAsesor:this.positionAsesor,
+                    namePersonAcuerdo:this.namePersonAcuerdo,
+                    namePersonAcuerdoPosition:this.namePersonAcuerdoPosition,
+                }) 
+            }
+            this.functionModal(false);
             },
             async onGetAllPeriods(){
                 await this.getAllPeriodsFirebase();
@@ -279,6 +319,30 @@ export default {
     },
     created () {
         this.onGetAllPeriods();
+        if(this.isUpdate){
+            this.name=this.proyectToUpdate.name;
+            this.type=this.proyectToUpdate.type;
+            this.periodo=this.proyectToUpdate.periodo;
+            this.residents=this.proyectToUpdate.residents;
+            this.empresa=this.proyectToUpdate.empresa;
+            this.sector=this.proyectToUpdate.sector;
+            this.rfc=this.proyectToUpdate.rfc;
+            this.street=this.proyectToUpdate.street;
+            this.colony=this.proyectToUpdate.colony;
+            this.zipCode=this.proyectToUpdate.zipCode;
+            this.municipio=this.proyectToUpdate.municipio;
+            this.city=this.proyectToUpdate.city;
+            this.estado=this.proyectToUpdate.estado;
+            this.phone=this.proyectToUpdate.phone;
+            this.email=this.proyectToUpdate.email;
+            this.mision=this.proyectToUpdate.mision;
+            this.titular=this.proyectToUpdate.titular;
+            this.titularPosition=this.proyectToUpdate.titularPosition;
+            this.externalAsesor=this.proyectToUpdate.externalAsesor;
+            this.positionAsesor=this.proyectToUpdate.positionAsesor;
+            this.namePersonAcuerdo=this.proyectToUpdate.namePersonAcuerdo;
+            this.namePersonAcuerdoPosition=this.proyectToUpdate.namePersonAcuerdoPosition;
+        }
     },
 }
 </script>

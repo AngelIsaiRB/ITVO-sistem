@@ -19,18 +19,7 @@
 
       <div class="mt-5">
         <div
-        @click="goTo('/proyects')"
-          class="bg-blue-50 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold"
-        >
-          <button
-            class="text-blue-500 text-sm font-semibold flex items-center focus:outline-none"
-          >
-               <i class="fas fa-th-list a-lg mx-4"></i>
-            Proyectos
-          </button>
-        </div>
-        <div
-          class="mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold"
+          class="bg-blue-50 mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold"
         >
           <button
             class="text-black text-sm font-semibold flex items-center focus:outline-none"
@@ -39,8 +28,19 @@
             Proyectos Activos
           </button>
         </div>
+        <div
+        @click="goTo('/proyects')"
+          class="mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold"
+        >
+          <button
+            class="text-black text-sm font-semibold flex items-center focus:outline-none"
+          >
+               <i class="fas fa-th-list a-lg mx-4"></i>
+            Proyectos
+          </button>
+        </div>
 
-        <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold">
+        <div class="mt-1 mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold">
           <button
             class="text-black text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -61,33 +61,10 @@
             proyectos por profesores
           </button>
         </div>
-
-        <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold">
-          <button
-            class="text-black text-sm font-semibold flex items-center focus:outline-none"
-          >
-            <svg
-              class="h-6 px-3"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
-            Eliminados
-          </button>
-        </div>
-
         <hr class="my-2" />
         <div 
         @click="goTo('/admin')"
-          class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-gray-100 cursor-pointer">
+          class="mt-1 mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold hover:bg-gray-100 cursor-pointer">
           <button
             class="text-black text-sm font-semibold flex items-center focus:outline-none"
           >

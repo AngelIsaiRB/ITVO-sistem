@@ -215,6 +215,61 @@ export default createStore({
         console.log(error)
       })
     },
+    async onUpdateProyectFirebase({commit},payload){
+      await db.collection("proyects").doc(payload.id).update({
+          name:payload.name,
+          type:payload.type,
+          periodo:payload.periodo,
+          residents:payload.residents,
+          empresa:payload.empresa,
+          sector:payload.sector,
+          rfc:payload.rfc,
+          street:payload.street,
+          colony:payload.colony,
+          zipCode:payload.zipCode,
+          municipio:payload.municipio,
+          city:payload.city,
+          estado:payload.estado,
+          phone:payload.phone,
+          email:payload.email,
+          mision:payload.mision,
+          titular:payload.titular,
+          titularPosition:payload.titularPosition,
+          externalAsesor:payload.externalAsesor,
+          positionAsesor:payload.positionAsesor,
+          namePersonAcuerdo:payload.namePersonAcuerdo,
+          namePersonAcuerdoPosition:payload.namePersonAcuerdoPosition,
+      }).
+      then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"se actualizo el proyecto"
+        })
+      })
+      .catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al actualizar el proyecto"
+        })
+        console.log(error)
+      })
+    },
+    async deleteProyect({commit},payload){
+      await db.collection("proyects").doc(payload.id).delete().
+      then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"se elimino el proyecto"
+        })
+      })
+      .catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al eliminar el documento"
+        })
+        console.log(error)
+      })
+    },
     async onSaveNewProyect({commit},payload){
       await db.collection("proyects").add({
         ...payload,

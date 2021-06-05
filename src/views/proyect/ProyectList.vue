@@ -9,6 +9,8 @@
     <div v-if="isModalOpenNewProyect">
         <NewProyectComponentVue
          :functionModal="onNewProyect"
+         :isUpdate="isUpdate"
+         :proyectToUpdate="proyectUpdate"
         />   
     </div>
     </div>
@@ -75,14 +77,17 @@
                                     toggleProyectPublicStatus(proyect.status,proyect.id);
                                     proyect.status =! proyect.status
                                 }"                                    
-                                class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                                class="px-6 cursor-pointer py-4 whitespace-no-wrap border-b text-black border-gray-500 text-sm leading-5">
                                 <span class="relative inline-block px-3 py-1 font-semibold tex-black leading-tight">
                                 <span aria-hidden class="absolute inset-0opacity-50 rounded-full"></span>
                                 <span 
                                  :class="(proyect.status)?'bg-green-500':'bg-red-500'"
-                                class="relative text-xs p-2 rounded-full">{{
+                                class="flex relative text-xs p-2 rounded-full items-center">{{
                                    ( proyect.status)?'Visible':'Oculto'
-                                    }}</span>
+                                    }} 
+                                    <i class="fas fa-exchange-alt mx-1"></i>
+                                    </span>
+                                    
                             </span>
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
@@ -92,7 +97,7 @@
                                 <span 
                                  :class="(!proyect.picked)?'bg-green-500':'bg-red-500'"
                                 class="relative text-xs p-2 rounded-full overflow-hidden ">{{
-                                   (!proyect.picked)?'Disponible':'No disp.'
+                                   (!proyect.picked)?'Libre':'Tomado'
                                    
                                     }}</span>
                             </span>
@@ -100,12 +105,16 @@
                             <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-500 text-blue-900 text-sm leading-5">
                                 {{proyect.empresa}}
                             </td>
-                            <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                                <button class=" w-20 py-1 border-yellow-500 border text-blue-500 rounded 
+                            <td 
+                                @click="onUpdatePryoyect(proyect)"
+                                class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
+                                <button class="my-1 w-20 py-1 border-yellow-500 border text-blue-500 rounded 
                                 transition duration-300 hover:bg-yellow-700 hover:text-white focus:outline-none">
                                     Editar
                                 </button>
-                                <button class=" w-20 py-1 border-red-500 border text-blue-500 rounded 
+                                <button 
+                                @click="onDeleteProyect(proyect.id)"
+                                class="my-1 w-20 py-1 border-red-500 border text-blue-500 rounded 
                                 transition duration-300 hover:bg-red-700 hover:text-white focus:outline-none">
                                     Eliminar
                                 </button>
@@ -136,6 +145,8 @@ export default {
             isModalOpenNewPeriod:false,   
             isModalOpenNewProyect:false,   
             periodo:"",
+            isUpdate:false,
+            proyectUpdate:{},
         }
     },
     methods: {
@@ -143,8 +154,9 @@ export default {
         "getProyectsForPeriod",
         "getAllPeriodsFirebase",
         "toggleStatusProyect",
+        "deleteProyect",
         ]),
-        async onGetAllUsrs(){
+        async onGetAllProyects(){
            await this.getAllProyects(),
            this.proyects = await this.getAllPoryects;
         },
@@ -164,13 +176,25 @@ export default {
         toggleProyectPublicStatus(status,id){
             status = !status;
             this.toggleStatusProyect({status,id})
+        },
+        onDeleteProyect(id){
+            if (confirm(`Desea eliminar el proyecto`)) { 
+            this.deleteProyect({id});
+             this.onGetAllProyects();  
+          } else
+            console.log('no.');
+        },
+       async  onUpdatePryoyect(payload){          
+            this.isUpdate=true;
+            this.proyectUpdate = payload;
+            await this.onNewProyect(true);
         }
     },
     computed: {
         ...mapGetters(["getAllPoryects","getAllPeriods"])
     },
     mounted () {
-           this.onGetAllUsrs()
+           this.onGetAllProyects()
            this.onGetAllPeriods()
     },
 }
