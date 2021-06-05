@@ -37,8 +37,6 @@ export default {
        }
    },
    mounted () {
-     console.log(this.alertStatus().status)
-     console.log(this.alertStatus().msg)
    },
 };
 </script>

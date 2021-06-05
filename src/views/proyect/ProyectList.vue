@@ -1,11 +1,21 @@
 <template>
 <div class="">
+    <div v-if="isModalOpenNewProyect">
+        <NewPeriodComponentVue
+            :functionModal="onNewPeriodModal"
+        />
+    </div>    
+    <div v-if="true">
+        <NewProyectComponentVue
+           
+        />
+    </div>    
     <div class="z-20  h-20 w-full bg-blue-800 flex items-center px-4 ">        
         <div class="mx-3">
             <BtnAddComponentVue :functionOpen="onNewProyect" :text='"Nuevo proyecto"'/>
         </div>        
         <div class="mx-3">
-            <BtnAddComponentVue :functionOpen="onNewPeriod" :text='"Nuevo periodo"'/>
+            <BtnAddComponentVue :functionOpen="()=>onNewPeriodModal(true)" :text='"Nuevo periodo"'/>
         </div>                
     </div>
     <div class="">
@@ -47,7 +57,7 @@
                                 <span 
                                  :class="(proyect.status)?'bg-green-500':'bg-red-500'"
                                 class="relative text-xs p-2 rounded-full">{{
-                                   ( proyect.status)?'Visible':'No visible'
+                                   ( proyect.status)?'Visible':'Oculto'
                                     }}</span>
                             </span>
                             </td>
@@ -83,27 +93,32 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import BtnAddComponentVue from '../../components/buttons/BtnAddComponent.vue'
+import NewPeriodComponentVue from '../../components/modals/NewPeriodComponent.vue'
+import NewProyectComponentVue from '../../components/modals/NewProyectComponent.vue'
 export default {
+    components: {
+        NewProyectComponentVue,
+        BtnAddComponentVue,
+        NewPeriodComponentVue,
+    },
     data() {
         return {
-            proyects:[],          
+            proyects:[],
+            isModalOpenNewProyect:false      
         }
-    },
-    components: {
-        BtnAddComponentVue,
     },
     methods: {
         ...mapActions(["getAllProyects"]),
         async onGetAllUsrs(){
            await this.getAllProyects(),
            this.proyects = await this.getAllPoryects;
-           console.log(this.proyects)            
+        //    console.log(this.proyects)            
         },
         onNewProyect() {
             console.log("click en onNewProyect")
         },
-        onNewPeriod(){
-            console.log("click en onNewPeriod")
+        onNewPeriodModal(payload){
+            this.isModalOpenNewProyect = payload;
         }
     },
     computed: {

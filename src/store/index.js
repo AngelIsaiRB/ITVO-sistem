@@ -31,6 +31,7 @@ export default createStore({
     proyects:[],
     ActiveProyect:{},
     // 
+    periods: []
   },
   mutations: {
     setLogged(state){
@@ -61,6 +62,10 @@ export default createStore({
     // public commits proyects
     setPublicProyects(state,payload){
       state.publicProyects = payload;
+    },
+    // period
+    setAllPeriods(state,payload){
+      state.periods = payload;
     }
   },
   actions: {
@@ -153,7 +158,6 @@ export default createStore({
         })
         commit("setAllProyects",payload)
         // console.log(payload)
-        console.log("get all proyects ok ")
       }).catch((error)=>{
         commit("setAlertStatus",{
           status:true,
@@ -179,7 +183,30 @@ export default createStore({
         })
       })
      commit("setPublicProyects",payload)
-    }
+    },
+    // 
+    // periodos
+    onSaveNewPeriod(_,payload){   
+      console.log(payload)   
+       db.collection("period").doc().set({
+        period:payload.period,        
+      })
+      .then(()=>{
+        console.log("peridodo guardado");
+      })
+    },
+    async getAllPeriodsFirebase({commit}){
+      const payload=[];
+      const periods = db.collection("period");
+      await periods.get().then((doc)=>{
+        doc.forEach((peri)=>{
+          payload.push( peri.data());
+        })
+        commit("setAllPeriods",payload)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    },
     // 
   },
   modules: {
@@ -196,6 +223,9 @@ export default createStore({
     },
     getPublicProyects(state){
       return state.publicProyects;
+    },
+    getAllPeriods(state){
+      return state.periods;
     }
   }
 })
