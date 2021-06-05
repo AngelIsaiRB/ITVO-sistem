@@ -26,6 +26,10 @@ export default createStore({
       status:false,
       msg:""
     },
+    succesStatus:{
+      status:false,
+      msg:""
+    },
     publicProyects:[],
     // proyects
     proyects:[],
@@ -49,6 +53,12 @@ export default createStore({
     setAlertStatus(state,payload){
       state.alertStatus = {
         ...state.alertStatus,
+        ...payload
+      };
+    },
+    setSuccesStatus(state,payload){
+      state.succesStatus = {
+        ...state.succesStatus,
         ...payload
       };
     },
@@ -145,6 +155,9 @@ export default createStore({
     toggleAlertStatus({commit},payload){
       commit("setAlertStatus",payload)
     },
+    toggleSuccesStatus({commit},payload){
+      commit("setSuccesStatus",payload)
+    },
     // proyectos
     async getAllProyects({commit}){
       const payload=[];
@@ -166,6 +179,42 @@ export default createStore({
         console.log(error)
       })
     },
+    async getProyectsForPeriod({commit},search){
+      const payload=[];
+      const proyects = db.collection("proyects").where("periodo","==", search);
+     await proyects.get().then( (doc)=>{
+         doc.forEach((proy)=>{
+           payload.push({
+             ...proy.data(),
+             id:proy.id
+           })
+        })
+        commit("setAllProyects",payload);
+        // console.log(payload)
+      }).catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al traer los proyectos filtrados"
+        })
+        console.log(error)
+      })
+    },
+    async toggleStatusProyect({commit},payload){
+      await db.collection("proyects").doc(payload.id).update({status:payload.status}).
+      then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"se actualizo es estatus del proyecto"
+        })
+      })
+      .catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al actualizar el documento"
+        })
+        console.log(error)
+      })
+    },
     async onSaveNewProyect({commit},payload){
       await db.collection("proyects").add({
         ...payload,
@@ -174,7 +223,10 @@ export default createStore({
         status:false,                
       })
       .then(()=>{
-        // TODO:alerta ok
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"Proyecto agregado"
+        })
       }).catch((error)=>{
         commit("setAlertStatus",{
           status:true,
@@ -237,6 +289,9 @@ export default createStore({
     },
     getAlertStatus(state){
       return state.alertStatus;
+    },
+    getSuccesStatus(state){
+      return state.succesStatus;
     },
     getPublicProyects(state){
       return state.publicProyects;

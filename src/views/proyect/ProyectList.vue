@@ -1,6 +1,7 @@
 <template>
 <div class="">
-    <div v-if="isModalOpenNewPeriod">
+      <div>
+        <div v-if="isModalOpenNewPeriod">
         <NewPeriodComponentVue
             :functionModal="onNewPeriodModal"
         />
@@ -8,15 +9,33 @@
     <div v-if="isModalOpenNewProyect">
         <NewProyectComponentVue
          :functionModal="onNewProyect"
-        />
-    </div>    
-    <div class="z-20  h-20 w-full bg-blue-800 flex items-center px-4 ">        
-        <div class="mx-3">
+        />   
+    </div>
+    </div>
+    <div class="z-20  h-20 w-full bg-blue-800 flex items-center px-4 justify-between">        
+        <div class="flex">
+            <div class="mx-3">
             <BtnAddComponentVue :functionOpen="onNewProyect" :text='"Nuevo proyecto"'/>
         </div>        
         <div class="mx-3">
             <BtnAddComponentVue :functionOpen="()=>onNewPeriodModal(true)" :text='"Nuevo periodo"'/>
-        </div>                
+        </div> 
+        </div>    
+        <div class="flex">
+            <div class="flex items-center">
+            <select
+                   v-model="periodo"
+                      class="w-7/12 px-5 py-1 text-black bg-gray-200 rounded"
+                      name="monthStart" id="start">                             
+                        <option  v-for="period in getAllPeriods" :key="period" :value="period.period">{{period.period}}</option>                              
+            </select>
+            <button 
+                    @click="getAllProyectsForPeriod"
+                    class=" mx-2 px-4  py-1 text-white font-light tracking-wider bg-black rounded">Filtrar
+                  <i class="fas fa-search  "></i>
+            </button>
+            </div> 
+            </div>          
     </div>
     <div class="">
         <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8 ">
@@ -29,7 +48,7 @@
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tipo</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Periodo</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Estatus publico</th>
-                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tomado</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tomado por alumnos</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Empresa</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Acciones</th>
                             </tr>
@@ -51,7 +70,12 @@
                                     (proyect.type === 1)?'Proyecto externo':'Propuesta propia'
                                 }}</td>
                             <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{proyect.periodo}}</td>
-                            <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
+                            <td 
+                                @click="()=>{
+                                    toggleProyectPublicStatus(proyect.status,proyect.id);
+                                    proyect.status =! proyect.status
+                                }"                                    
+                                class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">
                                 <span class="relative inline-block px-3 py-1 font-semibold tex-black leading-tight">
                                 <span aria-hidden class="absolute inset-0opacity-50 rounded-full"></span>
                                 <span 
@@ -77,8 +101,13 @@
                                 {{proyect.empresa}}
                             </td>
                             <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                                <button class="px-5 py-2 border-blue-500 border text-blue-500 rounded transition duration-300 hover:bg-blue-700 hover:text-white focus:outline-none">
-                                    detalles
+                                <button class=" w-20 py-1 border-yellow-500 border text-blue-500 rounded 
+                                transition duration-300 hover:bg-yellow-700 hover:text-white focus:outline-none">
+                                    Editar
+                                </button>
+                                <button class=" w-20 py-1 border-red-500 border text-blue-500 rounded 
+                                transition duration-300 hover:bg-red-700 hover:text-white focus:outline-none">
+                                    Eliminar
                                 </button>
                             </td>
                           </tr>
@@ -106,27 +135,43 @@ export default {
             proyects:[],
             isModalOpenNewPeriod:false,   
             isModalOpenNewProyect:false,   
+            periodo:"",
         }
     },
     methods: {
-        ...mapActions(["getAllProyects"]),
+        ...mapActions(["getAllProyects",
+        "getProyectsForPeriod",
+        "getAllPeriodsFirebase",
+        "toggleStatusProyect",
+        ]),
         async onGetAllUsrs(){
            await this.getAllProyects(),
            this.proyects = await this.getAllPoryects;
-        //    console.log(this.proyects)            
+        },
+        async getAllProyectsForPeriod(){
+            await this.getProyectsForPeriod(this.periodo);
+            this.proyects = await this.getAllPoryects;
         },
         onNewProyect(payload) {
             this.isModalOpenNewProyect =payload
         },
         onNewPeriodModal(payload){
             this.isModalOpenNewPeriod= payload;
+        },
+        async onGetAllPeriods(){
+                await this.getAllPeriodsFirebase();
+        },
+        toggleProyectPublicStatus(status,id){
+            status = !status;
+            this.toggleStatusProyect({status,id})
         }
     },
     computed: {
-        ...mapGetters(["getAllPoryects"])
+        ...mapGetters(["getAllPoryects","getAllPeriods"])
     },
     mounted () {
            this.onGetAllUsrs()
+           this.onGetAllPeriods()
     },
 }
 </script>
