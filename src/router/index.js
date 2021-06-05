@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/roots/Home.vue'
 import Login from '../views/roots/Login.vue'
+import LoginCreateAlum from '../views/login/LoginCreateAlum.vue'
 import Admin from '../views/roots/Admin.vue';
 import Proyects from '../views/roots/Proyects.vue';
+import LoginDecision from '../views/roots/LoginDecision.vue';
 import PublicViewProyects from '../views/roots/PublicViewProyects.vue';
 
 const routes = [
@@ -11,6 +13,16 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/loginDecision',
+    name: 'loginDecision',
+    component: LoginDecision
+  },
+  {
+    path: '/loginAlumn',
+    name: 'LoginAlum',
+    component: LoginCreateAlum
   },
   {
     path: '/publicProyects',
@@ -49,7 +61,7 @@ router.beforeEach((to,from,next)=>{
       next();
     }
     else{
-      next("/login");
+      next("/loginDecision");
     }
   }
   else{

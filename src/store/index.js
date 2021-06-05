@@ -322,7 +322,7 @@ export default createStore({
     async getAllPeriodsFirebase({commit}){
       const payload=[];
       const periods = db.collection("period");
-      await periods.get().then((doc)=>{
+      await periods.get().then((doc)=>{        
         doc.forEach((peri)=>{
           payload.push( peri.data());
         })
@@ -331,6 +331,78 @@ export default createStore({
         console.log(error)
       })
     },
+    // Alumnos-------------------
+    async createUserAlumn({commit},payload){
+      db.collection("usersAlums").where("nControl","==",payload.nControl).get()
+      .then(async(e)=>{
+        if(!e.empty){
+          return commit("setAlertStatus",{
+            status:true,
+            msg:"no se creo usuario nControl ya usado"
+          })
+        }
+        await db.collection("usersAlums").add({...payload,role:"alumno"})
+      .then((doc)=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:`usuario: ${payload.nControl} Agregado`
+        })
+        localStorage.setItem("isLoggedAlumn",true)
+        localStorage.setItem("idAlumn",doc.id)
+        localStorage.setItem("role","alumno")
+        // TODO: inicio de alumno
+        // router.push()
+      })
+      .catch((error)=>{
+        console.log(error)
+        commit("setAlertStatus",{
+          status:true,
+          msg:"no se pudo crear el usuario"
+        })
+      })
+      })
+      .catch(
+        (error)=>{
+          console.log(error)
+          commit("setAlertStatus",{
+            status:true,
+            msg:"no se creo usuario nControl ya usado"
+          })
+        }
+      )
+    },
+    async loginUserAlumno({commit},payload){
+      db.collection("usersAlums").where("email","==",payload.email).where("password","==",payload.password).get()
+      .then((doc)=>{
+        if(doc.docs.length === 1){
+          doc.forEach((user)=>{  
+            const id = user.id;
+            const {nControl,role}= user.data();
+            localStorage.setItem("isLoggedAlumn",true)
+            localStorage.setItem("idAlumn",id)
+            localStorage.setItem("role",role)
+            commit("setSuccesStatus",{
+              status:true,
+              msg:`vienvenido: ${nControl} `
+            })
+          })
+        }
+        else{
+          commit("setAlertStatus",{
+            status:true,
+            msg:"Email o correo incurrecto"
+          })
+        }
+      })
+      .catch((error)=>{
+        console.log(error)
+        commit("setAlertStatus",{
+          status:true,
+          msg:"Algo salio mal"
+        })
+      })
+
+    }
     // 
   },
   modules: {
