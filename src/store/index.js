@@ -166,6 +166,23 @@ export default createStore({
         console.log(error)
       })
     },
+    async onSaveNewProyect({commit},payload){
+      await db.collection("proyects").add({
+        ...payload,
+        actualResidents:0,
+        piked:false,
+        status:false,                
+      })
+      .then(()=>{
+        // TODO:alerta ok
+      }).catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al guardar el proyecto"
+        })
+        console.log(error)
+      })
+    },
     // proyects publics
     async getAllPublicProyects({commit}){
       const payload =[];

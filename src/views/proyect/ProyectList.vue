@@ -1,13 +1,13 @@
 <template>
 <div class="">
-    <div v-if="isModalOpenNewProyect">
+    <div v-if="isModalOpenNewPeriod">
         <NewPeriodComponentVue
             :functionModal="onNewPeriodModal"
         />
     </div>    
-    <div v-if="true">
+    <div v-if="isModalOpenNewProyect">
         <NewProyectComponentVue
-           
+         :functionModal="onNewProyect"
         />
     </div>    
     <div class="z-20  h-20 w-full bg-blue-800 flex items-center px-4 ">        
@@ -104,7 +104,8 @@ export default {
     data() {
         return {
             proyects:[],
-            isModalOpenNewProyect:false      
+            isModalOpenNewPeriod:false,   
+            isModalOpenNewProyect:false,   
         }
     },
     methods: {
@@ -114,11 +115,11 @@ export default {
            this.proyects = await this.getAllPoryects;
         //    console.log(this.proyects)            
         },
-        onNewProyect() {
-            console.log("click en onNewProyect")
+        onNewProyect(payload) {
+            this.isModalOpenNewProyect =payload
         },
         onNewPeriodModal(payload){
-            this.isModalOpenNewProyect = payload;
+            this.isModalOpenNewPeriod= payload;
         }
     },
     computed: {

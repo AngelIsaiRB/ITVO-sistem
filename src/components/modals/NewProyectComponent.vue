@@ -1,10 +1,10 @@
 <template>  
     <div 
-        class="z-40 fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-75">
-        <div class="h-full w-full flex justify-center items-center">
+        class="z-40 fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-75 overflow-y-auto">
+        <div class="h-full w-full flex justify-center items-center overflow-y-auto">
             <div class="z-50 w-9/12 bg-white px-10 py-2">
                <form 
-                        @submit.prevent="onSaveNewProyect()"
+                        @submit.prevent="onSaveNewProyectLocal()"
                         >
                    <div class="w-full flex justify-center">
                        <p class="text-gray-800 font-medium my-2 ">Nuevo Proyecto</p>
@@ -24,15 +24,15 @@
                            <p class="block text-base text-gray-600 mr-4">Tipo de Proyecto:</p>   
                            <input 
                            class=""
-                           v-model="typeProyect" type="radio"  name="optionProyect"  value="0">
+                           v-model="type" type="radio"  name="optionProyect"  value="0">
                            <label class="mx-2" for="">Proyecto INTERNO </label>
                            <input 
                            class=""
-                            v-model="typeProyect" type="radio"  name="optionProyect" value="1">
+                            v-model="type" type="radio"  name="optionProyect" value="1">
                            <label class="mx-2" for="">Proyecto EXTERNO </label>
                            <input 
                            class=""
-                            v-model="typeProyect" type="radio"  name="optionProyect" value="2">
+                            v-model="type" type="radio"  name="optionProyect" value="2">
                            <label class="mx-2" for="">Proyecto PROPUESTA </label>
                        </div>
                    </div>
@@ -40,7 +40,7 @@
                        <div class="w-6/12 flex items-center">
                            <p class="block text-base text-gray-600 mr-4">Periodo Proyectado:</p>
                            <select
-                           v-model="period"
+                           v-model="periodo"
                               class="w-7/12 px-5 py-1 text-black bg-gray-200 rounded"
                               name="monthStart" id="start">                             
                                 <option  v-for="period in getAllPeriods" :key="period" :value="period.period">{{period.period}}</option>                              
@@ -58,7 +58,7 @@
                    <div class="flex my-2">
                        <p class="block text-base text-gray-600 mr-4">Nombre:</p>
                        <input 
-                       v-model="nameEmpresa"
+                       v-model="empresa"
                        class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
                    </div>
                    <div class="flex justify-between my-2">
@@ -82,16 +82,120 @@
                         class="w-10/12 px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
                        </div>
                    </div>
-                    <div class="flex my-2">
-
+                    <div class="flex my-2 w-full">
+                        <div class="flex w-6/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">Direccion:</p>
+                       <input 
+                       v-model="street"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                        <div class="flex w-6/12">
+                       <p class="block text-base text-gray-600 mr-4">Colonia:</p>
+                       <input 
+                       v-model="colony"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
+                    </div>
+                    <div class="flex my-2 w-full">
+                        <div class="flex w-6/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">C.P:</p>
+                       <input 
+                       v-model="zipCode"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                        <div class="flex w-6/12">
+                       <p class="block text-base text-gray-600 mr-4">Municipio:</p>
+                       <input 
+                       v-model="municipio"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
+                    </div>
+                    <div class="flex my-2 w-full">
+                        <div class="flex w-6/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">Estado:</p>
+                       <input 
+                       v-model="estado"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                        <div class="flex w-6/12">
+                       <p class="block text-base text-gray-600 mr-4">Telefono:</p>
+                       <input 
+                       v-model="phone"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
+                    </div>
+                    <div class="flex my-2 w-full">
+                        <div class="flex w-6/12">
+                       <p class="block text-base text-gray-600 mr-4">Ciudad:</p>
+                       <input 
+                       v-model="city"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
+                        <div class="flex w-6/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">email:</p>
+                       <input 
+                       v-model="email"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                    </div>
+                    <div class="flex my-2 w-full">                       
+                         <p class="block text-base text-gray-600 mr-4">Mision:</p>
+                      <textarea 
+                      v-model="mision"
+                      class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none 
+                      w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white" 
+                      name="body" 
+                      placeholder='Mision de la empresa' required></textarea>
+                   </div>
+                   <div class="flex my-2 w-full">
+                        <div class="flex w-8/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">Nombre del responsable/titular de la empresa:</p>
+                       <input 
+                       v-model="titular"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                        <div class="flex w-4/12">
+                       <p class="block text-base text-gray-600 mr-4">Puesto:</p>
+                       <input 
+                       v-model="titularPosition"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
+                    </div>
+                   <div class="flex my-2 w-full">
+                        <div class="flex w-8/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">Nombre del asesor externo:</p>
+                       <input 
+                       v-model="externalAsesor"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                        <div class="flex w-4/12">
+                       <p class="block text-base text-gray-600 mr-4">Puesto:</p>
+                       <input 
+                       v-model="positionAsesor"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
+                    </div>
+                   <div class="flex my-2 w-full">
+                        <div class="flex w-8/12 mx-2">
+                       <p class="block text-base text-gray-600 mr-4">Nombre de la persona que firmara el acuerdo de trabajo:</p>
+                       <input 
+                       v-model="namePersonAcuerdo"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                       </div>
+                        <div class="flex w-4/12">
+                       <p class="block text-base text-gray-600 mr-4">Puesto:</p>
+                       <input 
+                       v-model="namePersonAcuerdoPosition"
+                       class="w-full px-5 py-1 text-gray-700 bg-gray-200 rounded" type="text">
+                        </div>
                     </div>
                    <!-- btns -->
                    <div class="w-full flex justify-around mb-4">
-                    <button type="submit"  class=" mt-4 px-4 py-1 text-white font-light tracking-wider bg-black rounded"
+                    <button type="submit"  class=" mt-4 px-4 px-16 py-1 text-white font-light tracking-wider bg-blue-900 rounded"
                     >Guardar</button>
                     <button type="button" 
                      @click="functionModal(false)"
-                     class=" mt-4 px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
+                     class=" mt-4 px-4 py-1 text-white font-light tracking-wider bg-red-900 rounded"
                     >Cancelar</button> 
                    </div>
                </form>
@@ -114,26 +218,55 @@ export default {
     data() {
         return {
             name:"",
-            typeProyect:0,
-            period:"",
+            type:0,
+            periodo:"",
             numberOfResidents:1,
-            nameEmpresa:"",
+            empresa:"",
             sector:"",
             rfc:"",
-
+            street:"",
+            colony:"",
+            zipCode:"",
+            municipio:"",
+            city:"",
+            estado:"",
+            phone:"",
+            email:"",
+            mision:"",
+            titular:"",
+            titularPosition:"",
+            externalAsesor:"",
+            positionAsesor:"",
+            namePersonAcuerdo:"",
+            namePersonAcuerdoPosition:""
         }
     },
     methods: {
-        ...mapActions(["onSaveNewPeriod","getAllPeriodsFirebase"]),
-        onSaveNewProyect(){
-                console.log({
+        ...mapActions(["onSaveNewPeriod","getAllPeriodsFirebase","onSaveNewProyect"]),
+        onSaveNewProyectLocal(){
+                this.onSaveNewProyect({
                     name:this.name,
-                    typeProyect:this.typeProyect,
-                    period:this.period,
+                    type:this.type,
+                    periodo:this.periodo,
                     residents:this.numberOfResidents,
-                    nameEmpresa:this.nameEmpresa,
+                    empresa:this.empresa,
                     sector:this.sector,
-                    rfc:this.rfc
+                    rfc:this.rfc,
+                    street:this.street,
+                    colony:this.colony,
+                    zipCode:this.zipCode,
+                    municipio:this.municipio,
+                    city:this.city,
+                    estado:this.estado,
+                    phone:this.phone,
+                    email:this.email,
+                    mision:this.mision,
+                    titular:this.titular,
+                    titularPosition:this.titularPosition,
+                    externalAsesor:this.externalAsesor,
+                    positionAsesor:this.positionAsesor,
+                    namePersonAcuerdo:this.namePersonAcuerdo,
+                    namePersonAcuerdoPosition:this.namePersonAcuerdoPosition,
 
                 })
             },
