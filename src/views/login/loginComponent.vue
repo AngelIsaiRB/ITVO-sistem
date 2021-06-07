@@ -14,7 +14,7 @@
             </div>
             <div class="w-full py-6 z-20">
                 <h1 class="my-6">
-                    <p class="text-5xl font-bold text-center tracking-wide">Entrar</p>
+                    <p class="text-5xl font-bold text-center tracking-wide">Administradores</p>
                 </h1>
                 <p class="text-gray-100">
                     Credenciales
@@ -50,6 +50,13 @@
                         Ingresar</button>
                     </div>
                 </form>
+                <div class="w-full flex justify-end">
+                    <button 
+                    @click="goToLoginAlumn"
+                        class="block text-base rounded-full bg-indigo-800 hover:bg-indigo-900 focus:outline-none px-4 py-2"                        
+                        >
+                        ¿Eres alumno?</button>
+                </div>
             </div>
         </div>
     </section>
@@ -58,6 +65,7 @@
 
 <script>
 import {mapActions} from 'vuex'
+import router from '../../router'
 
 export default {
     data() {
@@ -70,10 +78,12 @@ export default {
         ...mapActions(["LoginUser"]),
         onSubmitForm(){
             this.LoginUser({email:this.email, password : this.password })
-            // console.log({email:this.email, password : this.password })
             this.email = "";
             this.password = "";
         },
+        goToLoginAlumn(){
+            router.push("/loginAlumn")
+        }
     }
 }
 </script>

@@ -26,11 +26,16 @@ export default createStore({
       status:false,
       msg:""
     },
+    succesStatus:{
+      status:false,
+      msg:""
+    },
     publicProyects:[],
     // proyects
     proyects:[],
     ActiveProyect:{},
     // 
+    periods: []
   },
   mutations: {
     setLogged(state){
@@ -51,6 +56,12 @@ export default createStore({
         ...payload
       };
     },
+    setSuccesStatus(state,payload){
+      state.succesStatus = {
+        ...state.succesStatus,
+        ...payload
+      };
+    },
     deleteFromUsersAdmin(state,payload){
       state.usersAdmin.admins = state.usersAdmin.admins.filter((admin)=>{
         if(admin.id !== payload){
@@ -61,6 +72,10 @@ export default createStore({
     // public commits proyects
     setPublicProyects(state,payload){
       state.publicProyects = payload;
+    },
+    // period
+    setAllPeriods(state,payload){
+      state.periods = payload;
     }
   },
   actions: {
@@ -140,6 +155,9 @@ export default createStore({
     toggleAlertStatus({commit},payload){
       commit("setAlertStatus",payload)
     },
+    toggleSuccesStatus({commit},payload){
+      commit("setSuccesStatus",payload)
+    },
     // proyectos
     async getAllProyects({commit}){
       const payload=[];
@@ -153,11 +171,121 @@ export default createStore({
         })
         commit("setAllProyects",payload)
         // console.log(payload)
-        console.log("get all proyects ok ")
       }).catch((error)=>{
         commit("setAlertStatus",{
           status:true,
           msg:"algo salio mal al traer los proyectos"
+        })
+        console.log(error)
+      })
+    },
+    async getProyectsForPeriod({commit},search){
+      const payload=[];
+      const proyects = db.collection("proyects").where("periodo","==", search);
+     await proyects.get().then( (doc)=>{
+         doc.forEach((proy)=>{
+           payload.push({
+             ...proy.data(),
+             id:proy.id
+           })
+        })
+        commit("setAllProyects",payload);
+        // console.log(payload)
+      }).catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al traer los proyectos filtrados"
+        })
+        console.log(error)
+      })
+    },
+    async toggleStatusProyect({commit},payload){
+      await db.collection("proyects").doc(payload.id).update({status:payload.status}).
+      then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"se actualizo es estatus del proyecto"
+        })
+      })
+      .catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al actualizar el documento"
+        })
+        console.log(error)
+      })
+    },
+    async onUpdateProyectFirebase({commit},payload){
+      await db.collection("proyects").doc(payload.id).update({
+          name:payload.name,
+          type:payload.type,
+          periodo:payload.periodo,
+          residents:payload.residents,
+          empresa:payload.empresa,
+          sector:payload.sector,
+          rfc:payload.rfc,
+          street:payload.street,
+          colony:payload.colony,
+          zipCode:payload.zipCode,
+          municipio:payload.municipio,
+          city:payload.city,
+          estado:payload.estado,
+          phone:payload.phone,
+          email:payload.email,
+          mision:payload.mision,
+          titular:payload.titular,
+          titularPosition:payload.titularPosition,
+          externalAsesor:payload.externalAsesor,
+          positionAsesor:payload.positionAsesor,
+          namePersonAcuerdo:payload.namePersonAcuerdo,
+          namePersonAcuerdoPosition:payload.namePersonAcuerdoPosition,
+      }).
+      then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"se actualizo el proyecto"
+        })
+      })
+      .catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al actualizar el proyecto"
+        })
+        console.log(error)
+      })
+    },
+    async deleteProyect({commit},payload){
+      await db.collection("proyects").doc(payload.id).delete().
+      then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"se elimino el proyecto"
+        })
+      })
+      .catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al eliminar el documento"
+        })
+        console.log(error)
+      })
+    },
+    async onSaveNewProyect({commit},payload){
+      await db.collection("proyects").add({
+        ...payload,
+        actualResidents:0,
+        piked:false,
+        status:false,                
+      })
+      .then(()=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:"Proyecto agregado"
+        })
+      }).catch((error)=>{
+        commit("setAlertStatus",{
+          status:true,
+          msg:"algo salio mal al guardar el proyecto"
         })
         console.log(error)
       })
@@ -179,6 +307,101 @@ export default createStore({
         })
       })
      commit("setPublicProyects",payload)
+    },
+    // 
+    // periodos
+    onSaveNewPeriod(_,payload){   
+      console.log(payload)   
+       db.collection("period").doc().set({
+        period:payload.period,        
+      })
+      .then(()=>{
+        console.log("peridodo guardado");
+      })
+    },
+    async getAllPeriodsFirebase({commit}){
+      const payload=[];
+      const periods = db.collection("period");
+      await periods.get().then((doc)=>{        
+        doc.forEach((peri)=>{
+          payload.push( peri.data());
+        })
+        commit("setAllPeriods",payload)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    },
+    // Alumnos-------------------
+    async createUserAlumn({commit},payload){
+      db.collection("usersAlums").where("nControl","==",payload.nControl).get()
+      .then(async(e)=>{
+        if(!e.empty){
+          return commit("setAlertStatus",{
+            status:true,
+            msg:"no se creo usuario nControl ya usado"
+          })
+        }
+        await db.collection("usersAlums").add({...payload,role:"alumno"})
+      .then((doc)=>{
+        commit("setSuccesStatus",{
+          status:true,
+          msg:`usuario: ${payload.nControl} Agregado`
+        })
+        localStorage.setItem("isLoggedAlumn",true)
+        localStorage.setItem("idAlumn",doc.id)
+        localStorage.setItem("role","alumno")
+        router.push("/homeAlumn")
+      })
+      .catch((error)=>{
+        console.log(error)
+        commit("setAlertStatus",{
+          status:true,
+          msg:"no se pudo crear el usuario"
+        })
+      })
+      })
+      .catch(
+        (error)=>{
+          console.log(error)
+          commit("setAlertStatus",{
+            status:true,
+            msg:"no se creo usuario nControl ya usado"
+          })
+        }
+      )
+    },
+    async loginUserAlumno({commit},payload){
+      db.collection("usersAlums").where("email","==",payload.email).where("password","==",payload.password).get()
+      .then((doc)=>{
+        if(doc.docs.length === 1){
+          doc.forEach((user)=>{  
+            const id = user.id;
+            const {nControl,role}= user.data();
+            localStorage.setItem("isLoggedAlumn",true);
+            localStorage.setItem("idAlumn",id);
+            localStorage.setItem("role",role);
+            router.push("/homeAlumn")
+            commit("setSuccesStatus",{
+              status:true,
+              msg:`vienvenido: ${nControl} `
+            })
+          })
+        }
+        else{
+          commit("setAlertStatus",{
+            status:true,
+            msg:"Email o correo incurrecto"
+          })
+        }
+      })
+      .catch((error)=>{
+        console.log(error)
+        commit("setAlertStatus",{
+          status:true,
+          msg:"Algo salio mal"
+        })
+      })
+
     }
     // 
   },
@@ -194,8 +417,14 @@ export default createStore({
     getAlertStatus(state){
       return state.alertStatus;
     },
+    getSuccesStatus(state){
+      return state.succesStatus;
+    },
     getPublicProyects(state){
       return state.publicProyects;
+    },
+    getAllPeriods(state){
+      return state.periods;
     }
   }
 })
