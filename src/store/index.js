@@ -350,8 +350,7 @@ export default createStore({
         localStorage.setItem("isLoggedAlumn",true)
         localStorage.setItem("idAlumn",doc.id)
         localStorage.setItem("role","alumno")
-        // TODO: inicio de alumno
-        // router.push()
+        router.push("/homeAlumn")
       })
       .catch((error)=>{
         console.log(error)
@@ -378,9 +377,10 @@ export default createStore({
           doc.forEach((user)=>{  
             const id = user.id;
             const {nControl,role}= user.data();
-            localStorage.setItem("isLoggedAlumn",true)
-            localStorage.setItem("idAlumn",id)
-            localStorage.setItem("role",role)
+            localStorage.setItem("isLoggedAlumn",true);
+            localStorage.setItem("idAlumn",id);
+            localStorage.setItem("role",role);
+            router.push("/homeAlumn")
             commit("setSuccesStatus",{
               status:true,
               msg:`vienvenido: ${nControl} `

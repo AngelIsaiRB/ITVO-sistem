@@ -6,7 +6,7 @@ import Admin from '../views/roots/Admin.vue';
 import Proyects from '../views/roots/Proyects.vue';
 import LoginDecision from '../views/roots/LoginDecision.vue';
 import PublicViewProyects from '../views/roots/PublicViewProyects.vue';
-
+import HomeAlumn from "../views/homeAlumn/HomeAlumn.vue"
 const routes = [
   // Public
   {
@@ -29,7 +29,17 @@ const routes = [
     name: 'publicProyects',
     component: PublicViewProyects
   },
-  // 
+  // Alums
+  {
+    path:"/homeAlumn",
+    name:"homeAlum",
+    component:HomeAlumn,
+    meta:{
+      isAlumnProtected:true
+    }
+  },
+
+  // Admisn
   {
     path: '/',
     name: 'Home',
@@ -54,6 +64,19 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+router.beforeEach((to,from,next)=>{
+  if(to.meta.isAlumnProtected){
+    if(localStorage.getItem("isLoggedAlumn")){
+      next();
+    }
+    else{
+      next("/loginDecision");
+    }
+  }
+  else{
+    next();
+  }
+})
 
 router.beforeEach((to,from,next)=>{
   if(to.meta.protected){
@@ -61,6 +84,9 @@ router.beforeEach((to,from,next)=>{
       next();
     }
     else{
+      if(localStorage.getItem("isLoggedAlumn")){
+        next("/homeAlumn");
+      }
       next("/loginDecision");
     }
   }
