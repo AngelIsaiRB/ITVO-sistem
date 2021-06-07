@@ -1,12 +1,12 @@
 <template>
-  <aside class="col-span-4 bg-white h-screen py-5 w-60">
+  <aside class="fixed col-span-4 bg-white h-screen py-5 w-60">
       <div class="mt-5">
           <div 
           @click="goToHome()"
             :class="selected === 0
                 ?'bg-blue-200'
                 :''"
-            class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
+            class="mt-1 mr-50 rounded pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
           <button
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -19,7 +19,7 @@
             :class="selected === 1
                 ?'bg-blue-200'
                 :''"
-            class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
+            class="mt-1 mr-50 rounded pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
           <button
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -28,7 +28,7 @@
           </button>
         </div>
         <div
-          class=" mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer"
+          class=" mr-50 rounded pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer"
         >
           <button
             class="text-gray-600 text-black text-sm font-semibold flex items-center focus:outline-none"
@@ -38,7 +38,7 @@
           </button>
         </div>
 
-        <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
+        <div class="mt-1 mr-50 rounded pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
           <button
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
