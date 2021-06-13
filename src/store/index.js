@@ -402,7 +402,16 @@ export default createStore({
         })
       })
 
-    }
+    },
+    // 
+    // logout
+    OnLogOutApplication(){
+      localStorage.removeItem("isLoggedAlumn")
+      localStorage.removeItem("idAlumn")
+      localStorage.removeItem("role")
+      localStorage.removeItem("isLogged")
+      router.push("/")
+    },
     // 
   },
   modules: {

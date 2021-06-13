@@ -24,7 +24,7 @@
             class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
           >
               <i class="fas fa-folder fa-lg mx-4 "></i>
-            Archivos
+            Proyectos
           </button>
         </div>
         <div
@@ -56,6 +56,7 @@ export default {
     data() {
         return {
             selected: 0,
+            
         }    
     },
     props: {

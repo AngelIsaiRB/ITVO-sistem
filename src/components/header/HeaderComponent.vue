@@ -12,7 +12,9 @@
           />
           <h1 class="text-black text-2xl">ITVO</h1>
         </div>
-        <div class="flex-1 ml-8">
+        <div 
+        v-if="!isUser"
+        class="flex-1 ml-8">
           <div class="w-full inline-flex">
             <input
               type="text"
@@ -37,11 +39,17 @@
         </div>
 
         <div class="menu flex justify-end items-center flex-1 space-x-4">
-          <img
-            class="h-9 rounded-full border border-gray-100 shadow-sm"
-            src="https://randomuser.me/api/portraits/men/11.jpg"
-            alt="user image"
-          />
+          <div v-if="isUser">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <div v-else>
+            <i class="fas fa-user-cog"></i>            
+            </div>          
+          <div>
+            <button 
+            @click="onLogOut"
+            class="mx-2">Salir</button>
+            </div>          
         </div>
       </div>
     </div>
@@ -50,12 +58,23 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import router from '../../router/index.js';
 export default {
   methods: {
+    ...mapActions(["OnLogOutApplication"]),
     goToHome() {
       router.push("/")
+    },
+     onLogOut() {
+        this.OnLogOutApplication()
     }
+  },
+  props: {
+    isUser: {
+      type: Boolean,
+      default: false
+    },
   },
 }
 </script>
