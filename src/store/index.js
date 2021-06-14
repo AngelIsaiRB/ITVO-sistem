@@ -33,7 +33,7 @@ export default createStore({
     publicProyects:[],
     // proyects
     proyects:[],
-    ActiveProyect:{},
+    activeProyect:{},
     // 
     periods: [],
     // 
@@ -42,6 +42,12 @@ export default createStore({
   mutations: {
     setAlumno(state,payload){
       state.alumno = payload;
+    },
+    setActiveProyect(state,payload){
+      state.activeProyect = payload;
+    },
+    setStatusPdfPreliminarLocal(state){
+      state.alumno = {...state.alumno, statusPre:"pendiente"};
     },
     setLogged(state){
       state.isLogged = !state.isLogged;
@@ -343,8 +349,11 @@ export default createStore({
       db.collection("usersAlums").doc(idAlum).get()
       .then(async (alm) =>{
         const data = alm.data();
-        console.log(data)
         commit("setAlumno",data);
+        if(data.myProyect){
+          db.collection("proyects").doc(data.myProyect).get()
+          .then(proy => commit("setActiveProyect",proy.data()))
+        }
       })
     },
     async createUserAlumn({commit},payload){
@@ -356,7 +365,12 @@ export default createStore({
             msg:"no se creo usuario nControl ya usado"
           })
         }
-        await db.collection("usersAlums").add({...payload,role:"alumno"})
+        await db.collection("usersAlums").add({
+          ...payload,
+          role:"alumno",
+          statusPre:"none",
+        
+        })
       .then((doc)=>{
         commit("setSuccesStatus",{
           status:true,
@@ -457,6 +471,38 @@ export default createStore({
       })
       
     },
+    async onGetProyectForId({commit},id){
+      db.collection("proyects").doc(id).get()
+      .then(proyc=>{
+        commit("setActiveProyect",proyc.data())
+      })
+    },
+    async onSavePdfPreeliminarProyect({commit},payload){
+      const refpdf = firebase.storage().ref(`/preliminares/${payload.name}-preliminar`);
+      await refpdf.put(payload.file).then((snapshot)=>{
+        snapshot.ref.getDownloadURL().then((url)=>{
+          console.log(url);
+        db.collection("usersAlums").doc(localStorage.getItem("idAlumn")).update({
+          urlPreliminar:url,
+          statusPre:"pendiente"
+        })
+        .then(()=>{
+          commit("setStatusPdfPreliminarLocal")
+          commit("setSuccesStatus",{
+            status:true,
+            msg:`Se agrego el PDF preliminar`
+          })
+        })
+        .catch(()=>{
+          commit("setAlertStatus",{
+            status:true,
+            msg:"Algo salio mal, sal de cuenta e inicia sesion de nuevo"
+          });
+          return
+        })
+        })
+      })
+    },
     // 
     // logout
     OnLogOutApplication(){
@@ -492,5 +538,8 @@ export default createStore({
     getDataAlumn(state){
       return state.alumno;
     },
+    getActiveProyect(state){
+      return state.activeProyect;
+    }
   }
 })
