@@ -35,9 +35,14 @@ export default createStore({
     proyects:[],
     ActiveProyect:{},
     // 
-    periods: []
+    periods: [],
+    // 
+    alumno:{},
   },
   mutations: {
+    setAlumno(state,payload){
+      state.alumno = payload;
+    },
     setLogged(state){
       state.isLogged = !state.isLogged;
     },
@@ -275,7 +280,8 @@ export default createStore({
         ...payload,
         actualResidents:0,
         piked:false,
-        status:false,                
+        status:false,
+        AlumnsInThisProyect:[]                
       })
       .then(()=>{
         commit("setSuccesStatus",{
@@ -293,10 +299,10 @@ export default createStore({
     // proyects publics
     async getAllPublicProyects({commit}){
       const payload =[];
-      const proyects = db.collection("proyects").where("status", "==", true);
+      const proyects = db.collection("proyects").where("status", "==", true).where("picked", "==", false);
       await proyects.get().then((doc)=>{
         doc.forEach((proyect)=>{
-          payload.push(proyect.data())
+          payload.push({...proyect.data(),id:proyect.id})
         })
       })
       .catch((error)=>{
@@ -332,6 +338,15 @@ export default createStore({
       })
     },
     // Alumnos-------------------
+    async onGetAlumnForFirebase({commit}){
+      const idAlum = localStorage.getItem("idAlumn");
+      db.collection("usersAlums").doc(idAlum).get()
+      .then(async (alm) =>{
+        const data = alm.data();
+        console.log(data)
+        commit("setAlumno",data);
+      })
+    },
     async createUserAlumn({commit},payload){
       db.collection("usersAlums").where("nControl","==",payload.nControl).get()
       .then(async(e)=>{
@@ -403,6 +418,45 @@ export default createStore({
       })
 
     },
+    async onAddProyectToAlumn({commit},idProyect){
+      const idUser = localStorage.getItem("idAlumn")
+      if(!idUser){        
+        commit("setAlertStatus",{
+          status:true,
+          msg:"Algo salio mal, intenta de nuevo"
+        });
+        return
+      }
+      const proyect = await db.collection("proyects").doc(idProyect);
+      proyect.get().then(async(proy)=>{
+        const {actualResidents,residents,picked,AlumnsInThisProyect } = await proy.data();
+        if(picked){
+          commit("setAlertStatus",{
+            status:true,
+            msg:"Proyecto lleno!"
+          });
+          return
+        }
+        const isLleno = (actualResidents+1 >= residents);
+        await proyect.update({picked:isLleno,AlumnsInThisProyect:[...AlumnsInThisProyect,idUser],actualResidents:actualResidents+1});
+       const userref= await db.collection("usersAlums").doc(idUser)
+        userref.update({myProyect:idProyect}).then(()=>{
+          userref.get().then(data =>commit("setAlumno",data.data()))
+          commit("setSuccesStatus",{
+            status:true,
+            msg:`Se agrego el proyecto`
+          })
+        })
+        .catch(()=>{
+          commit("setAlertStatus",{
+            status:true,
+            msg:"Algo salio mal, sal de cuenta e inicia sesion de nuevo"
+          });
+          return
+        })
+      })
+      
+    },
     // 
     // logout
     OnLogOutApplication(){
@@ -434,6 +488,9 @@ export default createStore({
     },
     getAllPeriods(state){
       return state.periods;
-    }
+    },
+    getDataAlumn(state){
+      return state.alumno;
+    },
   }
 })

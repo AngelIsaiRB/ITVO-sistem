@@ -2,7 +2,7 @@
   <aside class="fixed col-span-4 bg-white h-screen py-5 w-60">
       <div class="mt-5">
           <div 
-          @click="goToHome()"
+          @click="goTo(0)"
             :class="selected === 0
                 ?'bg-blue-200'
                 :''"
@@ -15,7 +15,8 @@
           </button>
         </div>
         <hr>
-          <div 
+          <div
+           @click="goTo(1)"
             :class="selected === 1
                 ?'bg-blue-200'
                 :''"
@@ -51,12 +52,10 @@
 </template>
 
 <script>
-import router from '../../router'
 export default {
     data() {
         return {
             selected: 0,
-            
         }    
     },
     props: {
@@ -64,10 +63,15 @@ export default {
             type: Function,
             default: ()=>{}
         },
+        changePage: {
+      type: Function,
+      default: ()=>{}
+    },
     },
     methods: {      
-      goToHome() {
-        router.push("/")
+      goTo(n) {
+        this.changePage(n)
+        this.selected=n
       }
     },
 }
