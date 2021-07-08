@@ -1,7 +1,10 @@
 <template>
-<div>
-  
-</div>
+  <div>
+      <div v-for="(proyect,index) in proyects" :key="index">
+          {{proyect.name}}
+      </div>
+
+  </div>
 </template>
 
 <script>

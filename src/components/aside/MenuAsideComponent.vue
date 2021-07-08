@@ -1,23 +1,6 @@
 <template>
   <aside class="col-span-4 bg-white h-screen py-5 w-60">
-      <button
-      @click="functionNewPyoyect()"
-        class="flex items-center cursor align-middle py-2 bg-white shadow-md rounded-3xl text-gray-800 text-sm font-semibold ml-3 border border-gray-200 hover:shadow-xl transition-all w-36 focus:outline-none"
-      >
-        <svg class="h-8 px-4" viewBox="0 0 36 36">
-          <path class="ng-tns-c17-1" d="M16 16v14h4V20z" fill="#34A853"></path>
-          <path
-            class="ng-tns-c17-1"
-            d="M30 16H20l-4 4h14z"
-            fill="#4285F4"
-          ></path>
-          <path class="ng-tns-c17-1" d="M6 16v4h10l4-4z" fill="#FBBC05"></path>
-          <path class="ng-tns-c17-1" d="M20 16V6h-4v14z" fill="#EA4335"></path>
-          <path class="ng-tns-c17-1" d="M0 0h36v36H0z" fill="none"></path></svg
-        >Nuevo
-      </button>
-
-      <div class="mt-5">
+     <div class="mt-5">
         <div
           class="bg-blue-50 mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold"
         >
@@ -25,7 +8,7 @@
             class="text-black text-sm font-semibold flex items-center focus:outline-none"
           >
                <i class="fas fa-cubes fa-lg mx-4"></i>
-            Proyectos Activos
+            Activos
           </button>
         </div>
         <div

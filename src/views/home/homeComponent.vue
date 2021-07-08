@@ -1,7 +1,4 @@
 <template>
-<div v-if="modaNewProyect">
-  <NewProyectVue :fucntionClose="closeModalNewProyect"/>
-</div>
     <HeaderComponentVue/>
     <div class="grid grid-cols-12 mt-20  ">
     <div class=" col-span-2 ">
@@ -26,7 +23,7 @@
             :class="activeCategory===2 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
               class=" text-sm font-semibold flex items-center focus:outline-none border border-l-0 border-r-0 border-gray-300 px-2 py-2"
             >
-              En curso
+              Revision Preliminar
             </button>
             <button
             @click="onChangeCategoryMenu(3)"
@@ -40,10 +37,10 @@
 
         <hr class="my-5" />
         <div v-if="activeCategory === 1" class="">
-          <ProyectsComponentVue :openModalNew="openModalNew"/>
+          <ProyectsComponentVue />
         </div>
-        <div v-if="activeCategory === 2" class="">
-          <p>segunda categoria</p>
+        <div v-if="activeCategory === 2" class="">          
+          <ProyectsForRevisionPreliminarComponentVue/>
         </div>
         <div v-if="activeCategory === 3" class="">
           <p>tercera categ</p>
@@ -57,13 +54,13 @@
 import MenuAsideComponentVue from '../../components/aside/MenuAsideComponent.vue';
 import HeaderComponentVue from '../../components/header/HeaderComponent.vue';
 import ProyectsComponentVue from '../../components/home_category/ProyectsComponent.vue';
-import NewProyectVue from '../../components/modals/NewProyect.vue';
+import ProyectsForRevisionPreliminarComponentVue from '../../components/preliminar/proyectsForRevisionPreliminarComponent.vue';
 export default {
   components: {
-    NewProyectVue,
     HeaderComponentVue,
     MenuAsideComponentVue,
     ProyectsComponentVue,
+    ProyectsForRevisionPreliminarComponentVue,
   },
   name: "Home",
   data() {
