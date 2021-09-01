@@ -23,7 +23,7 @@
           </button>
         </div>
 
-        <div class="mt-1 mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold">
+        <!-- <div class="mt-1 mr-50 hover:bg-blue-300 cursor-pointer  pl-6 py-3 font-semibold">
           <button
             class="text-black text-sm font-semibold flex items-center focus:outline-none"
           >
@@ -43,7 +43,7 @@
             </svg>
             proyectos por profesores
           </button>
-        </div>
+        </div> -->
         <hr class="my-2" />
         <div 
         @click="goTo('/admin')"

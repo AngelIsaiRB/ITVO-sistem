@@ -1,14 +1,20 @@
 <template>
-<div>
-  
-</div>
+<div class="h-full w-full">
+              <div>
+                  <div class="">
+                 <proyectListTakedVue/>
+                    </div>                  
+              </div>
+        </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import proyectListTakedVue from '../../views/proyect/proyectListTaked.vue';
 export default {
   components: {
-  },
+    proyectListTakedVue
+    },
   data() {
     return {
       proyects: []

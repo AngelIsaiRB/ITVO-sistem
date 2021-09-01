@@ -43,7 +43,7 @@
           <ProyectsForRevisionPreliminarComponentVue/>
         </div>
         <div v-if="activeCategory === 3" class="">
-          <p>tercera categ</p>
+           <ProyectsForRevisionPreliminarComponentVue/>
         </div>
       </div>
     </div>
