@@ -31,21 +31,10 @@
         <div
           class=" mr-50 rounded  pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer"
         >
-          <button
-            class="text-black text-black text-sm font-semibold flex items-center focus:outline-none"
-          >
-            <i class="fas fa-cubes fa-lg mx-4"></i>
-            algo
-          </button>
         </div>
 
         <div class="mt-1 mr-50 rounded  pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
-          <button
-            class="text-black text-sm font-semibold flex items-center focus:outline-none"
-          >
-          <i class="fas fa-folder fa-lg mx-4 "></i>
-            algo
-          </button>
+          
         </div>
       </div>
     </aside>

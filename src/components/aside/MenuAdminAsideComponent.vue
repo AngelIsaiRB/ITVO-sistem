@@ -44,21 +44,10 @@
         <div
           class=" mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer"
         >
-          <button
-            class="text-gray-600 text-black text-sm font-semibold flex items-center focus:outline-none"
-          >
-            <i class="fas fa-cubes fa-lg mx-4"></i>
-            Componentes
-          </button>
         </div>
 
         <div class="mt-1 mr-50 rounded rounded-r-3xl pl-6 py-3 font-semibold hover:bg-blue-100 cursor-pointer">
-          <button
-            class="text-gray-600 text-sm font-semibold flex items-center focus:outline-none"
-          >
-          <i class="fas fa-folder fa-lg mx-4 "></i>
-            procesos
-          </button>
+         
         </div>
       </div>
     </aside>

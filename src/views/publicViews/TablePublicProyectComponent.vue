@@ -27,8 +27,10 @@
              </div>
          </div>
      </div>
-     <div v-for="(proyect,index) in getPublicProyects" :key="proyect.id"
-        class="my-2 mx-4"
+     <div 
+     @click="openLogin()"
+     v-for="(proyect,index) in getPublicProyects" :key="proyect.id"
+        class="my-2 mx-4 cursor-pointer"
      >
          <hr>
      <div class="w-full grid grid-cols-5"
@@ -66,6 +68,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import router from '../../router'
 export default {
     data() {
         return {
@@ -77,7 +80,9 @@ export default {
         async onGetPublicProyects(){
             this.getAllPublicProyects()
         },
-
+        openLogin(){
+            router.push("/loginDecision")
+        }
     },
     computed: {
         ...mapGetters(["getPublicProyects"])

@@ -38,6 +38,7 @@ export default createStore({
     periods: [],
     // 
     alumno:{},
+    //     
   },
   mutations: {
     setAlumno(state,payload){
@@ -356,6 +357,32 @@ export default createStore({
         }
       })
     },
+    async getLinkToDownload({commit},id){
+      db.collection("usersAlums").doc(id).get()
+      .then(async(alumno)=>{
+        const data =await alumno.data();
+        window.open(data.urlPreliminar);
+        console.log(commit)
+        return data
+      })
+    },
+    async getLinkToDownloadReporteDeRecidencia({commit},id){
+      db.collection("usersAlums").doc(id).get()
+      .then(async(alumno)=>{
+        const data =await alumno.data();
+        window.open(data.urlReporte);
+        console.log(commit)
+        return data
+      })
+    },
+    async getDataAlumnPerID({commit},id){
+      db.collection("usersAlums").doc(id).get()
+      .then(async(alumno)=>{
+        const data =await alumno.data();        
+        console.log(commit)
+        return data
+      })
+    },
     async createUserAlumn({commit},payload){
       db.collection("usersAlums").where("nControl","==",payload.nControl).get()
       .then(async(e)=>{
@@ -369,7 +396,8 @@ export default createStore({
           ...payload,
           role:"alumno",
           statusPre:"none",
-        
+          statusRepo:"vacio",
+          urlReporte:""
         })
       .then((doc)=>{
         commit("setSuccesStatus",{
@@ -452,7 +480,10 @@ export default createStore({
           return
         }
         const isLleno = (actualResidents+1 >= residents);
-        await proyect.update({picked:isLleno,AlumnsInThisProyect:[...AlumnsInThisProyect,idUser],actualResidents:actualResidents+1});
+        await proyect.update({picked:isLleno,
+          statusProyect:1,
+          AlumnsInThisProyect:[...AlumnsInThisProyect,idUser],
+          actualResidents:actualResidents+1});
        const userref= await db.collection("usersAlums").doc(idUser)
         userref.update({myProyect:idProyect}).then(()=>{
           userref.get().then(data =>commit("setAlumno",data.data()))
@@ -503,6 +534,32 @@ export default createStore({
         })
       })
     },
+    async onSavePdfReporteProyect({commit},payload){
+      const refpdf = firebase.storage().ref(`/finalReport/${payload.name}-reporteDeRecidencia`);
+      await refpdf.put(payload.file).then((snapshot)=>{
+        snapshot.ref.getDownloadURL().then((url)=>{
+          console.log(url);
+        db.collection("usersAlums").doc(localStorage.getItem("idAlumn")).update({
+          urlReporte:url,
+          statusRepo:"pendiente"
+        })
+        .then(()=>{
+          commit("setStatusPdfPreliminarLocal")
+          commit("setSuccesStatus",{
+            status:true,
+            msg:`Se agrego el PDF preliminar`
+          })
+        })
+        .catch(()=>{
+          commit("setAlertStatus",{
+            status:true,
+            msg:"Algo salio mal, sal de cuenta e inicia sesion de nuevo"
+          });
+          return
+        })
+        })
+      })
+    },
     // 
     // logout
     OnLogOutApplication(){
@@ -522,6 +579,14 @@ export default createStore({
     },
     getAllPoryects(state){
       return state.proyects;
+    },
+    getAllPoryectsModePreliminar(state){
+      const proyectsInPreeliminar = state.proyects.filter(proyect=>proyect.statusProyect===1)
+      return proyectsInPreeliminar
+    },
+    getAllPoryectsConcluidos(state){
+      const proyectsInPreeliminar = state.proyects.filter(proyect=>proyect.statusProyect===3)
+      return proyectsInPreeliminar
     },
     getAlertStatus(state){
       return state.alertStatus;

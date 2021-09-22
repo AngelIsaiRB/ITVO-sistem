@@ -16,7 +16,7 @@
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Tipo</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Periodo</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Alumno</th>
-                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Anteproyecto</th>
+                                <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Reporte</th>
                                 <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm leading-4 text-blue-500 tracking-wider">Opciones</th>                                
                             </tr>
                         </thead>
@@ -52,17 +52,11 @@
                             </button>
                             </td>
                             <td 
-                                
                                 class=" px-6 py-4 whitespace-no-wrap text-right border-b border-gray-500 text-sm leading-5">
-                                <button class="my-1 w-20 py-1 bg-red-400 border-red-500 border text-black rounded 
-                                transition duration-300 hover:bg-red-700 hover:text-white focus:outline-none">
-                                    Rechazar + comentarios
-                                </button>
                                 <button 
-                                
                                 class="my-1 w-20 py-1 bg-green-500 border-green-500 border text-black rounded 
                                 transition duration-300 hover:bg-green-700 hover:text-white focus:outline-none">
-                                    Aceptar
+                                    Concluir
                                 </button>
                             </td>
                           </tr>
@@ -88,9 +82,9 @@ export default {
     }
   },
     methods: {
-      ...mapActions(["getAllProyects","getLinkToDownload","getDataAlumnPerID"]),
+      ...mapActions(["getAllProyects","getLinkToDownloadReporteDeRecidencia","getDataAlumnPerID"]),
       async getLink(id){
-        await this.getLinkToDownload(id)
+        await this.getLinkToDownloadReporteDeRecidencia(id)
       }
     },
     computed: {

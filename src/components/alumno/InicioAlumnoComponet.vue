@@ -28,7 +28,8 @@
             <p><strong>Asesor externo</strong>{{getActiveProyect.externalAsesor}}</p>
             <p><strong>Telefono</strong>{{getActiveProyect.phone}}</p>
         </div>
-        <div class="p-6 bg-white border-b border-gray-200">
+        <div v-if="getActiveProyect.statusProyect===0">
+            <div class="p-6 bg-white border-b border-gray-200">
            Realiza tu reporte preeliminar y cuando este listo subelo aqui,
            despues "Academia" te valuara y te llegara un email de Aceptado o Rechazado,
            tambien puedes visitar la pagina para ver el estatus
@@ -36,7 +37,8 @@
         <div class="flex justify-between w-full p-2">
           <div 
             v-if="getDataAlumn.statusPre !=='none' "
-            class="w-full flex items-center justify-center">            
+            class="w-full flex items-center justify-center">  
+              <p>Proyecto preliminar: -</p>                      
               <p class="bg-yellow-100 text-2xl font-bold text-yellow-500" v-if="getDataAlumn.statusPre ==='pendiente'">En revision</p>
               <p class="bg-red-100 text-2xl font-bold text-red-500" v-if="getDataAlumn.statusPre ==='rechazado'">No validado</p>
               <p class="bg-green-100 text-2xl font-bold text-green-500" v-if="getDataAlumn.statusPre ==='aceptado'">Validado</p>            
@@ -59,6 +61,40 @@
     </label>
           </div>
 </div>
+        </div>
+        <div v-if="getActiveProyect.statusProyect===1">
+            <div class="p-6 bg-white border-b border-gray-200">
+           Cuando termines el "Reporte de recidencia profesional" subelo aqui
+        </div>
+        <div class="flex justify-between w-full p-2">
+          <div 
+            v-if="getDataAlumn.statusRepo !=='none' "
+            class="w-full flex items-center justify-center">  
+              <p>Reporte de residencia profesional: -</p>                      
+              <p class=" text-2xl font-bold text-black" v-if="getDataAlumn.statusRepo ==='vacio'">sin Subir</p>
+              <p class="bg-yellow-100 text-2xl font-bold text-yellow-500" v-if="getDataAlumn.statusRepo ==='pendiente'">En revision</p>
+              <p class="bg-red-100 text-2xl font-bold text-red-500" v-if="getDataAlumn.statusRepo ==='rechazado'">No validado</p>
+              <p class="bg-green-100 text-2xl font-bold text-green-500" v-if="getDataAlumn.statusRepo ==='aceptado'">Validado</p>            
+          </div>
+        <div v-else class="w-full flex items-center justify-center">
+          <p class="bg-gray-100 text-2xl font-bold text-gray-500" v-if="true">sube tu archivo PDF</p>
+        </div>
+          <div>
+            <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-500 hover:text-white">
+        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+        </svg>
+        <span class="mt-2 text-base leading-normal">Subir archivo</span>
+        <span class="mt-2 text-base leading-normal">{{name}}</span>
+        <input 
+        @change="addFileReporte"
+        accept="application/pdf"
+        type='file' 
+        class="hidden" />
+    </label>
+          </div>
+</div>
+        </div>
     </div>
 </div>
     </div>
@@ -84,12 +120,22 @@ export default {
     ...mapGetters(["getDataAlumn","getActiveProyect"])
   },
   methods: {
-    ...mapActions(["onSavePdfPreeliminarProyect"]),
+    ...mapActions(["onSavePdfPreeliminarProyect","onSavePdfReporteProyect"]),
     addFile(e){      
              this.pdf = e.target.files[0];             
              if(this.pdf.type === "application/pdf"){
                this.name = this.pdf.name
                this.onSavePdfPreeliminarProyect({
+                 file:this.pdf,
+                 name:this.getDataAlumn.nControl
+               })
+             }
+        },
+    addFileReporte(e){      
+             this.pdf = e.target.files[0];             
+             if(this.pdf.type === "application/pdf"){
+               this.name = this.pdf.name
+               this.onSavePdfReporteProyect({
                  file:this.pdf,
                  name:this.getDataAlumn.nControl
                })

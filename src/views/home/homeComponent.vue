@@ -28,6 +28,13 @@
             <button
             @click="onChangeCategoryMenu(3)"
             :class="activeCategory===3 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
+              class=" text-sm font-semibold flex items-center focus:outline-none border border-x-0 border-r-0 border-gray-300 px-2 py-2"
+            >
+              En Proceso
+            </button>
+            <button
+            @click="onChangeCategoryMenu(4)"
+            :class="activeCategory===4 ?'text-blue-600 bg-blue-100' :'text-gray-600 bg-white'"
               class=" text-sm font-semibold flex items-center focus:outline-none border border-gray-300 rounded rounded-r-md rounded-l-none px-2 py-2"
             >
               Concluidos
@@ -42,8 +49,11 @@
         <div v-if="activeCategory === 2" class="">          
           <ProyectsForRevisionPreliminarComponentVue/>
         </div>
-        <div v-if="activeCategory === 3" class="">
-           <ProyectsForRevisionPreliminarComponentVue/>
+        <div v-if="activeCategory === 3" class="">          
+          <ProyectsInProcesComponentVue/>
+        </div>
+        <div v-if="activeCategory === 4" class="">
+           <ProyectsConcluyedsComponentVue/>
         </div>
       </div>
     </div>
@@ -52,13 +62,17 @@
 
 <script>
 import MenuAsideComponentVue from '../../components/aside/MenuAsideComponent.vue';
+import ProyectsInProcesComponentVue from '../../components/enProceso/ProyectsInProcesComponent.vue';
 import HeaderComponentVue from '../../components/header/HeaderComponent.vue';
 import ProyectsComponentVue from '../../components/home_category/ProyectsComponent.vue';
+import ProyectsConcluyedsComponentVue from '../../components/preliminar/ProyectsConcluyedsComponent.vue';
 import ProyectsForRevisionPreliminarComponentVue from '../../components/preliminar/proyectsForRevisionPreliminarComponent.vue';
 export default {
   components: {
+    ProyectsInProcesComponentVue,
     HeaderComponentVue,
     MenuAsideComponentVue,
+    ProyectsConcluyedsComponentVue,
     ProyectsComponentVue,
     ProyectsForRevisionPreliminarComponentVue,
   },

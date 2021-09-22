@@ -7,8 +7,8 @@
           <button
             class="text-black text-sm font-semibold flex items-center focus:outline-none"
           >
-               <i class="fas fa-cubes fa-lg mx-4"></i>
-            Activos
+              <i class="fas fa-home fa-lg mx-6 "></i>
+            Home
           </button>
         </div>
         <div

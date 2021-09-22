@@ -279,6 +279,7 @@ export default {
                     positionAsesor:this.positionAsesor,
                     namePersonAcuerdo:this.namePersonAcuerdo,
                     namePersonAcuerdoPosition:this.namePersonAcuerdoPosition,
+                    statusProyect:0
                 })
             }
             else{
